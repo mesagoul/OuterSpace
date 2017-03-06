@@ -14,8 +14,8 @@ import retrofit2.http.Query;
  */
 
 public interface Service {
-        @POST("/api/v1/auth/create")
-        Call<List<User>> createUserAccount(
+        @POST("api/v1/auth/create")
+        Call<User> createUserAccount(
                 @Body User user);
 
 }

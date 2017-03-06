@@ -5,15 +5,19 @@ package mesa.com.outerspacemanager.outerspacemanager;
  */
 
 public class User {
-    private String userame;
+    private String username;
     private String password;
+    private String token;
 
     public User(String username, String password){
-        this.userame = username;
+        this.username = username;
         this.password = password;
     }
 
     public String getUsername(){
-        return this.userame;
+        return this.username;
+    }
+    public String getToken(){
+        return this.token;
     }
 }
