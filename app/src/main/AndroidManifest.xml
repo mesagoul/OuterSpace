@@ -25,7 +25,11 @@
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name="mesa.com.outerspacemanager.outerspacemanager.BuildingActivity"
+            android:name="mesa.com.outerspacemanager.outerspacemanager.buildings.BuildingActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="mesa.com.outerspacemanager.outerspacemanager.ConnexionActivity"
             android:label="@string/app_name" >
         </activity>
 

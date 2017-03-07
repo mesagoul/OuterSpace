@@ -21,7 +21,8 @@
             android:textColor="@color/colorWhite" />
 
         <EditText
-            android:id="@+id/input_identifiant"
+            android:id="@+id/connexion_username"
+            android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center" />
@@ -42,7 +43,8 @@
             android:textColor="@color/colorWhite" />
 
         <EditText
-            android:id="@+id/input_mdp"
+            android:id="@+id/connexion_mdp"
+            android:textColor="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center" />
@@ -50,22 +52,13 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_connexion"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="10dp"
-        android:background="@drawable/button"
-        android:text="Connexion"
-        android:textColor="@color/colorWhite" />
-
-    <Button
-        android:id="@+id/btn_inscription"
+        android:id="@+id/btn_se_connecter"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
         android:background="@drawable/button"
         android:gravity="center"
-        android:text="Valider"
+        android:text="Se connecter"
         android:textColor="@color/colorWhite" />
 
 

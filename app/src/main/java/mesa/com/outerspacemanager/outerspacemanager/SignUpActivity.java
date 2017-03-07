@@ -31,7 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignUpActivity extends Activity {
 
-    private Button addBtn;
+    private Button btn_inscription;
+    private Button btn_connexion;
     private EditText username;
     private EditText password;
     private User user;
@@ -54,15 +55,21 @@ public class SignUpActivity extends Activity {
 
         username = (EditText) findViewById(R.id.input_identifiant);
         password = (EditText) findViewById(R.id.input_mdp);
-        addBtn = (Button) findViewById(R.id.btn_add);
+        btn_inscription = (Button) findViewById(R.id.btn_inscription);
+        btn_connexion = (Button) findViewById(R.id.btn_connexion);
         gson = new Gson();
 
-        progress = new ProgressDialog(this);
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
+
+        btn_connexion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toInscriptionActivity = new Intent(getApplicationContext(),ConnexionActivity.class);
+                startActivity(toInscriptionActivity);
+            }
+        });
+
+        btn_inscription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 progress.show();
