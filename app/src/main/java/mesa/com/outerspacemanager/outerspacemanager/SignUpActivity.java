@@ -1,6 +1,7 @@
 package mesa.com.outerspacemanager.outerspacemanager;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.Loader;
 import android.content.SharedPreferences;
@@ -36,6 +37,7 @@ public class SignUpActivity extends Activity {
     private User user;
     private Retrofit retrofit;
     private Gson gson;
+    private ProgressDialog progress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,9 +57,15 @@ public class SignUpActivity extends Activity {
         addBtn = (Button) findViewById(R.id.btn_add);
         gson = new Gson();
 
+        progress = new ProgressDialog(this);
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog
+
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progress.show();
                 user = new User(username.getText().toString(),password.getText().toString());
                 retrofit = new Retrofit.Builder()
                         .baseUrl("https://outer-space-manager.herokuapp.com/")
@@ -70,14 +78,20 @@ public class SignUpActivity extends Activity {
 
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
-                        SharedPreferences settings = getSharedPreferences("token", 0);
-                        SharedPreferences.Editor editor = settings.edit();
+                        progress.dismiss();
+                        if(response.isSuccessful()){
+                            SharedPreferences settings = getSharedPreferences("token", 0);
+                            SharedPreferences.Editor editor = settings.edit();
 
-                        editor.putString("token", response.body().getToken());
-                        editor.commit();
+                            editor.putString("token", response.body().getToken());
+                            editor.commit();
 
-                        Intent IntentMainActivity = new Intent(getApplicationContext(),MainActivity.class);
-                        startActivity(IntentMainActivity);
+                            Intent IntentMainActivity = new Intent(getApplicationContext(),MainActivity.class);
+                            startActivity(IntentMainActivity);
+                        }else{
+                            Toast.makeText(getApplicationContext(), String.format("Erreur lors de l'authentification"), Toast.LENGTH_SHORT).show();
+                        }
+
                     }
 
                     @Override
