@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager;
+package mesa.com.outerspacemanager.outerspacemanager.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,9 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
+import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.network.Service;
 import mesa.com.outerspacemanager.outerspacemanager.loader.LoaderProgressBar;
+import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

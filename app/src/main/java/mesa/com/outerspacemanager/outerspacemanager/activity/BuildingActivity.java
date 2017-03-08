@@ -1,4 +1,4 @@
-    package mesa.com.outerspacemanager.outerspacemanager.buildings;
+    package mesa.com.outerspacemanager.outerspacemanager.activity;
 
     import android.app.Activity;
     import android.app.AlertDialog;
@@ -14,11 +14,12 @@
     import com.google.gson.Gson;
     import java.util.ArrayList;
     import mesa.com.outerspacemanager.outerspacemanager.R;
-    import mesa.com.outerspacemanager.outerspacemanager.Responses;
-    import mesa.com.outerspacemanager.outerspacemanager.Service;
+    import mesa.com.outerspacemanager.outerspacemanager.model.Responses;
+    import mesa.com.outerspacemanager.outerspacemanager.network.Service;
+    import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewBuilding;
     import mesa.com.outerspacemanager.outerspacemanager.loader.LoaderProgressBar;
-    import okhttp3.OkHttpClient;
-    import okhttp3.logging.HttpLoggingInterceptor;
+    import mesa.com.outerspacemanager.outerspacemanager.model.Building;
+    import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
     import retrofit2.Call;
     import retrofit2.Callback;
     import retrofit2.Response;
@@ -44,7 +45,7 @@
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_building);
+            setContentView(R.layout.activity_item_listview);
 
             refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_buildings_layout);
             refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

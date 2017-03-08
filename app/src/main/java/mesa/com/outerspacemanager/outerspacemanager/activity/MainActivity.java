@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager;
+package mesa.com.outerspacemanager.outerspacemanager.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,8 +11,9 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 
-import mesa.com.outerspacemanager.outerspacemanager.buildings.BuildingActivity;
-import mesa.com.outerspacemanager.outerspacemanager.searches.SearcheActivity;
+import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.network.Service;
+import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

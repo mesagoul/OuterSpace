@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager;
+package mesa.com.outerspacemanager.outerspacemanager.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,7 +9,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import mesa.com.outerspacemanager.outerspacemanager.buildings.Building;
+import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.model.User;
 
 /**
  * Created by Lucas on 07/03/2017.

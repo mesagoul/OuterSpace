@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.searches;
+package mesa.com.outerspacemanager.outerspacemanager.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.searches.Searche;
+import mesa.com.outerspacemanager.outerspacemanager.model.Searche;
 
 /**
  * Created by Lucas on 07/03/2017.
@@ -22,7 +22,7 @@ public class AdapterViewSearche extends ArrayAdapter<Searche> {
         private final ArrayList<Searche> values;
         private Searche aSearche;
         public AdapterViewSearche(Context context, ArrayList<Searche> values) {
-            super(context, R.layout.adapter_list_building, values);
+            super(context, R.layout.adapter_list_item, values);
             this.context = context;
             this.values = values;
         }
@@ -31,7 +31,7 @@ public class AdapterViewSearche extends ArrayAdapter<Searche> {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.adapter_list_building, parent, false);
+            View rowView = inflater.inflate(R.layout.adapter_list_item, parent, false);
 
             aSearche = values.get(position);
 

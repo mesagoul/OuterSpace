@@ -1,18 +1,20 @@
-package mesa.com.outerspacemanager.outerspacemanager;
+package mesa.com.outerspacemanager.outerspacemanager.activity;
 
 import android.app.Activity;
-import android.content.Loader;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.network.Service;
 import mesa.com.outerspacemanager.outerspacemanager.loader.LoaderProgressBar;
+import mesa.com.outerspacemanager.outerspacemanager.model.User;
+import mesa.com.outerspacemanager.outerspacemanager.model.Users;
 import retrofit2.*;
 import retrofit2.converter.gson.GsonConverterFactory;
 

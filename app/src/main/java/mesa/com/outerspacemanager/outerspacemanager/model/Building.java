@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.buildings;
+package mesa.com.outerspacemanager.outerspacemanager.model;
 
 /**
  * Created by Lucas on 06/03/2017.

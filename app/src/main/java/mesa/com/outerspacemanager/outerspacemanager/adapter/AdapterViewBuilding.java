@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.buildings;
+package mesa.com.outerspacemanager.outerspacemanager.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 
 /**
  * Created by Lucas on 07/03/2017.
@@ -21,7 +22,7 @@ public class AdapterViewBuilding extends ArrayAdapter<Building> {
         private final ArrayList<Building> values;
         private Building aBuilding;
         public AdapterViewBuilding(Context context, ArrayList<Building> values) {
-            super(context, R.layout.adapter_list_building, values);
+            super(context, R.layout.adapter_list_item, values);
             this.context = context;
             this.values = values;
         }
@@ -30,7 +31,7 @@ public class AdapterViewBuilding extends ArrayAdapter<Building> {
         public View getView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.adapter_list_building, parent, false);
+            View rowView = inflater.inflate(R.layout.adapter_list_item, parent, false);
 
             aBuilding = values.get(position);
 

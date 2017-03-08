@@ -1,11 +1,12 @@
-package mesa.com.outerspacemanager.outerspacemanager;
+package mesa.com.outerspacemanager.outerspacemanager.network;
 
-import mesa.com.outerspacemanager.outerspacemanager.buildings.Building;
-import mesa.com.outerspacemanager.outerspacemanager.buildings.Buildings;
-import mesa.com.outerspacemanager.outerspacemanager.searches.Searche;
-import mesa.com.outerspacemanager.outerspacemanager.searches.Searches;
+import mesa.com.outerspacemanager.outerspacemanager.model.Building;
+import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
+import mesa.com.outerspacemanager.outerspacemanager.model.Searche;
+import mesa.com.outerspacemanager.outerspacemanager.model.Searches;
+import mesa.com.outerspacemanager.outerspacemanager.model.User;
+import mesa.com.outerspacemanager.outerspacemanager.model.Users;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;

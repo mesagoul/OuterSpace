@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.buildings;
+package mesa.com.outerspacemanager.outerspacemanager.model;
 
 import java.util.ArrayList;
 
