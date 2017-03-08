@@ -39,18 +39,21 @@ public class AdapterViewBuilding extends ArrayAdapter<Building> {
             TextView building_gas_cost = (TextView) rowView.findViewById(R.id.building_gas_cost_value);
             TextView building_mineral_cost = (TextView) rowView.findViewById(R.id.building_mineral_cost_value);
             TextView building_level = (TextView) rowView.findViewById(R.id.building_level);
+            TextView building_time = (TextView) rowView.findViewById(R.id.building_time_value);
 
             String name = aBuilding.getName();
             String effect = aBuilding.getEffect();
             String gasCost = aBuilding.getGazCost().toString();
             String mineralCost = aBuilding.getMineralsCost().toString();
             String level = aBuilding.getLevel().toString();
+            String time = aBuilding.getTimeToBuild().toString();
 
             building_name.setText(name);
             building_effect.setText(effect);
             building_gas_cost.setText(gasCost);
             building_mineral_cost.setText(mineralCost);
             building_level.setText(level);
+            building_time.setText(time);
 
             return rowView;
         }

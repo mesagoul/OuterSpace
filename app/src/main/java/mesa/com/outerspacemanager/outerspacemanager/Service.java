@@ -1,7 +1,9 @@
 package mesa.com.outerspacemanager.outerspacemanager;
 
+import mesa.com.outerspacemanager.outerspacemanager.buildings.Building;
 import mesa.com.outerspacemanager.outerspacemanager.buildings.Buildings;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -27,6 +29,13 @@ public interface Service {
         @GET("api/v1/users/get")
         Call<User> getUser(@Header("x-access-token") String token);
 
+        @GET("api/v1/users/{from}/{limit}")
+        Call<Users> getUsers(
+                @Header("x-access-token") String token,
+                @Path("from") int from,
+                @Path("limit") int limit
+        );
+
 
         // BUILDINGS
         @GET("api/v1/buildings/list")
@@ -34,8 +43,8 @@ public interface Service {
                 @Header("x-access-token") String token
         );
 
-        @GET("api/v1/buildings/create/{buildingId}")
-        Call<String> upgradeBuilding(
+        @POST("api/v1/buildings/create/{buildingId}")
+        Call<Building> upgradeBuilding(
                 @Header("x-access-token") String token,
                 @Path("buildingId") int buildingId
         );

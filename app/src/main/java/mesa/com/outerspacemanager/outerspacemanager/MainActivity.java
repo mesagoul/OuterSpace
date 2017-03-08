@@ -36,6 +36,9 @@ public class MainActivity extends Activity {
     private Button btnGalaxie;
     private Button btnLogOut;
 
+    private TextView gas;
+    private TextView mineral;
+
     private User currentUser;
     private Retrofit retrofit;
     private Gson gson;
@@ -50,6 +53,9 @@ public class MainActivity extends Activity {
         username = (TextView) findViewById(R.id.menu_username);
         score_label = (TextView) findViewById(R.id.menu_score);
         score_value = (TextView) findViewById(R.id.menu_score_value);
+        gas = (TextView) findViewById(R.id.menu_mineral);
+        mineral = (TextView) findViewById(R.id.menu_gas);
+
 
         btnVueGeneral = (Button) findViewById(R.id.btnGeneralVue);
         btnBatiment = (Button) findViewById(R.id.btn_batiments);
@@ -78,6 +84,8 @@ public class MainActivity extends Activity {
             public void onResponse(Call<User> call, Response<User> response) {
                 username.setText(response.body().getUsername());
                 score_value.setText(response.body().getPoints().toString());
+                gas.setText(response.body().getGas().toString() + " gas");
+                mineral.setText(response.body().getMinerals().toString() + " mineral");
             }
 
             @Override
@@ -105,6 +113,14 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent toBuildingActivity = new Intent(getApplicationContext(),BuildingActivity.class);
                 startActivity(toBuildingActivity);
+            }
+        });
+
+        btnGalaxie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toGalaxieActivity = new Intent(getApplicationContext(),GalaxieActivity.class);
+                startActivity(toGalaxieActivity);
             }
         });
 

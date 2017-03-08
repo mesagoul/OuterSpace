@@ -1,5 +1,13 @@
 package mesa.com.outerspacemanager.outerspacemanager;
 
+import android.content.SharedPreferences;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 /**
  * Created by Lucas on 06/03/2017.
  */

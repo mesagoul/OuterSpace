@@ -6,6 +6,7 @@
     import android.content.SharedPreferences;
     import android.os.Bundle;
     import android.support.annotation.Nullable;
+    import android.support.v4.widget.SwipeRefreshLayout;
     import android.view.View;
     import android.widget.AdapterView;
     import android.widget.ListView;
@@ -13,6 +14,7 @@
     import com.google.gson.Gson;
     import java.util.ArrayList;
     import mesa.com.outerspacemanager.outerspacemanager.R;
+    import mesa.com.outerspacemanager.outerspacemanager.Responses;
     import mesa.com.outerspacemanager.outerspacemanager.Service;
     import mesa.com.outerspacemanager.outerspacemanager.loader.LoaderProgressBar;
     import okhttp3.OkHttpClient;
@@ -34,13 +36,24 @@
         private Gson gson;
         private Retrofit retrofit;
         private LoaderProgressBar progress;
-        Service service;
-        String token;
+        private Service service;
+        private String token;
+        private Responses responses;
+        private SwipeRefreshLayout refreshLayout;
 
         @Override
         protected void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_building);
+
+            refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_buildings_layout);
+            refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+                @Override
+                public void onRefresh() {
+                    refreshListBuildings();
+
+                }
+            });
 
             progress = new LoaderProgressBar(this);
             progress.show();
@@ -78,6 +91,7 @@
             request.enqueue(new Callback<Buildings>() {
                 @Override
                 public void onResponse(Call<Buildings> call, Response<Buildings> response) {
+                    refreshLayout.setRefreshing(false);
                     progress.dismiss();
                     if (response.isSuccessful()) {
                         myBuildings = response.body().getBuildings();
@@ -104,21 +118,23 @@
                     "Oui",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Call<String> upgradeRequest = service.upgradeBuilding(token, currentBuilding.getBuildingId());
-                            upgradeRequest.enqueue(new Callback<String>() {
+                            Call<Building> upgradeRequest = service.upgradeBuilding(token, currentBuilding.getBuildingId());
+                            upgradeRequest.enqueue(new Callback<Building>() {
                                 @Override
-                                public void onResponse(Call<String> call, Response<String> response) {
+                                public void onResponse(Call<Building> call, Response<Building> response) {
                                     if(response.isSuccessful()){
+                                        Toast.makeText(getApplicationContext(), String.format("En construction"), Toast.LENGTH_SHORT).show();
                                         // CREER UN runnable
-
                                     }else{
-                                        Toast.makeText(getApplicationContext(), String.format("Erreur lors de l'upgrade de votre batiment"), Toast.LENGTH_SHORT).show();
+                                        //responses = gson.fromJson(response.errorBody().toString(), Responses.class);
+                                        Toast.makeText(getApplicationContext(), String.format("Votre batiment est déja en construction"), Toast.LENGTH_SHORT).show();
                                     }
+                                    //response.errorBody().string()
 
                                 }
 
                                 @Override
-                                public void onFailure(Call<String> call, Throwable t) {
+                                public void onFailure(Call<Building> call, Throwable t) {
                                     Toast.makeText(getApplicationContext(), String.format("Erreur lors de l'upgrade de votre batiment"), Toast.LENGTH_SHORT).show();
                                 }
                             });
@@ -137,4 +153,5 @@
             AlertDialog upgradeDialog = alerteDialog.create();
             upgradeDialog.show();
         }
+
     }

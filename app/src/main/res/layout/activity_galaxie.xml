@@ -4,16 +4,17 @@
     android:layout_height="match_parent"
     android:padding="20dp"
     android:background="@color/colorDark">
+
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_buildings_layout"
+        android:id="@+id/swipe_galaxie_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <ListView
-            android:id="@+id/list_buildings"
+            android:id="@+id/list_galaxie"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
 
 </LinearLayout>

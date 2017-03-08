@@ -39,6 +39,10 @@ public class Building {
 
         return (this.mineralCostLevel0 + (this.level * this.mineralCostByLevel));
     }
+    public Integer getTimeToBuild(){
+
+        return (this.timeToBuildLevel0 + (this.level * this.timeToBuildByLevel));
+    }
     public Integer getLevel(){
         return this.level;
     }
