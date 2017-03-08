@@ -2,6 +2,8 @@ package mesa.com.outerspacemanager.outerspacemanager;
 
 import mesa.com.outerspacemanager.outerspacemanager.buildings.Building;
 import mesa.com.outerspacemanager.outerspacemanager.buildings.Buildings;
+import mesa.com.outerspacemanager.outerspacemanager.searches.Searche;
+import mesa.com.outerspacemanager.outerspacemanager.searches.Searches;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.Body;
@@ -47,6 +49,18 @@ public interface Service {
         Call<Building> upgradeBuilding(
                 @Header("x-access-token") String token,
                 @Path("buildingId") int buildingId
+        );
+
+        // SEARCHES
+        @GET("api/v1/searches/list")
+        Call<Searches> getSearches(
+                @Header("x-access-token") String token
+        );
+
+        @POST("/api/v1/searches/create/{searchId}")
+        Call<Searche> upgradeSearche(
+                @Header("x-access-token") String token,
+                @Path("searchId") int buildingId
         );
 
 

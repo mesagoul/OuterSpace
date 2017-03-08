@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import mesa.com.outerspacemanager.outerspacemanager.buildings.BuildingActivity;
+import mesa.com.outerspacemanager.outerspacemanager.searches.SearcheActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,6 +106,14 @@ public class MainActivity extends Activity {
                 editor.putString("token", "");
                 editor.commit();
                 finish();
+            }
+        });
+
+        btnRecherches.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toSearcheActivity = new Intent(getApplicationContext(),SearcheActivity.class);
+                startActivity(toSearcheActivity);
             }
         });
 
