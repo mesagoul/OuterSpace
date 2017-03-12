@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
-import mesa.com.outerspacemanager.outerspacemanager.loader.LoaderProgressBar;
+import mesa.com.outerspacemanager.outerspacemanager.utils.LoaderProgressBar;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import retrofit2.Call;
 import retrofit2.Callback;

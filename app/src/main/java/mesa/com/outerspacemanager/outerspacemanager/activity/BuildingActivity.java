@@ -2,22 +2,29 @@
 
     import android.app.Activity;
     import android.app.AlertDialog;
+    import android.app.NotificationManager;
+    import android.app.PendingIntent;
     import android.content.DialogInterface;
+    import android.content.Intent;
     import android.content.SharedPreferences;
     import android.os.Bundle;
     import android.support.annotation.Nullable;
+    import android.support.v4.app.NotificationCompat;
     import android.support.v4.widget.SwipeRefreshLayout;
+    import android.util.Log;
     import android.view.View;
     import android.widget.AdapterView;
     import android.widget.ListView;
     import android.widget.Toast;
     import com.google.gson.Gson;
     import java.util.ArrayList;
+    import android.os.Handler;
+
     import mesa.com.outerspacemanager.outerspacemanager.R;
     import mesa.com.outerspacemanager.outerspacemanager.model.Responses;
     import mesa.com.outerspacemanager.outerspacemanager.network.Service;
     import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewBuilding;
-    import mesa.com.outerspacemanager.outerspacemanager.loader.LoaderProgressBar;
+    import mesa.com.outerspacemanager.outerspacemanager.utils.LoaderProgressBar;
     import mesa.com.outerspacemanager.outerspacemanager.model.Building;
     import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
     import retrofit2.Call;
@@ -30,7 +37,7 @@
      * Created by Lucas on 06/03/2017.
      */
 
-    public class BuildingActivity extends Activity {
+    public class BuildingActivity extends Activity{
         private ListView list_buildings;
         private ArrayList<Building> myBuildings;
         private Building currentBuilding;
@@ -123,9 +130,21 @@
                             upgradeRequest.enqueue(new Callback<Building>() {
                                 @Override
                                 public void onResponse(Call<Building> call, Response<Building> response) {
+
                                     if(response.isSuccessful()){
+                                        Handler handler = new Handler();
+
+                                        final Runnable r = new Runnable() {
+                                            public void run() {
+                                                getNotification();
+                                            }
+                                        };
+
+                                        handler.postDelayed(r, currentBuilding.getTimeToBuild() * 1000);
+
+
+
                                         Toast.makeText(getApplicationContext(), String.format("En construction"), Toast.LENGTH_SHORT).show();
-                                        // CREER UN runnable
                                     }else{
                                         //responses = gson.fromJson(response.errorBody().toString(), Responses.class);
                                         Toast.makeText(getApplicationContext(), String.format("Votre batiment est déja en construction"), Toast.LENGTH_SHORT).show();
@@ -154,5 +173,26 @@
             AlertDialog upgradeDialog = alerteDialog.create();
             upgradeDialog.show();
         }
+
+
+        public void getNotification(){
+            Intent intent = new Intent(getApplicationContext(), BuildingActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+
+            // Build notification
+            // Actions are just fake
+            NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getApplicationContext())
+                    .setContentTitle("Outer Space Manager")
+                    .setSmallIcon(R.drawable.small_logo)
+                    .setContentText("Your building is ready to update")
+                    .setContentIntent(pIntent);
+            // Sets an ID for the notification
+            int mNotificationId = 001;
+            // Gets an instance of the NotificationManager service
+            NotificationManager mNotifyMgr =
+                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+// Builds the notification and issues it.
+            mNotifyMgr.notify(mNotificationId, mBuilder.build());}
 
     }

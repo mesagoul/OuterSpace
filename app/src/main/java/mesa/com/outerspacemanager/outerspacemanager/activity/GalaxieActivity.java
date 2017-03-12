@@ -11,8 +11,9 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewGalaxie;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
-import mesa.com.outerspacemanager.outerspacemanager.loader.LoaderProgressBar;
+import mesa.com.outerspacemanager.outerspacemanager.utils.LoaderProgressBar;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import mesa.com.outerspacemanager.outerspacemanager.model.Users;
 import retrofit2.*;
@@ -47,7 +48,7 @@ public class GalaxieActivity extends Activity {
                 .build();
 
         Service service = retrofit.create(Service.class);
-        Call<Users> request = service.getUsers(token,0,3);
+        Call<Users> request = service.getUsers(token,0,10);
 
         request.enqueue(new Callback<Users>() {
             @Override
@@ -56,7 +57,7 @@ public class GalaxieActivity extends Activity {
                 progress.dismiss();
                 if(response.isSuccessful()){
                     listUser = response.body().getUsers();
-                   // topListe.setAdapter(new AdapterViewGalaxie(getApplicationContext(), listUser));
+                    topListe.setAdapter(new AdapterViewGalaxie(getApplicationContext(), listUser));
                 }else{
                     Toast.makeText(getApplicationContext(), String.format("Erreur"), Toast.LENGTH_SHORT).show();
                 }

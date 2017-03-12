@@ -1,7 +1,6 @@
 package mesa.com.outerspacemanager.outerspacemanager.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +17,7 @@ import mesa.com.outerspacemanager.outerspacemanager.activity.ConnexionActivity;
 import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
+import mesa.com.outerspacemanager.outerspacemanager.utils.LoaderProgressBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,7 +37,7 @@ public class SignUpActivity extends Activity {
     private User user;
     private Retrofit retrofit;
     private Gson gson;
-    private ProgressDialog progress;
+    private LoaderProgressBar progress;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +57,7 @@ public class SignUpActivity extends Activity {
         btn_inscription = (Button) findViewById(R.id.btn_inscription);
         btn_connexion = (Button) findViewById(R.id.btn_connexion);
         gson = new Gson();
+        progress = new LoaderProgressBar(this);
 
 
 
@@ -84,7 +85,7 @@ public class SignUpActivity extends Activity {
 
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
-                        progress.dismiss();
+                       progress.dismiss();
                         if(response.isSuccessful()){
                             SharedPreferences settings = getSharedPreferences("token", 0);
                             SharedPreferences.Editor editor = settings.edit();

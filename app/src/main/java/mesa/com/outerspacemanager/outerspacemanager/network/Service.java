@@ -1,5 +1,10 @@
 package mesa.com.outerspacemanager.outerspacemanager.network;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searche;

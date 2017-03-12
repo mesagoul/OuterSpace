@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.loader;
+package mesa.com.outerspacemanager.outerspacemanager.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;

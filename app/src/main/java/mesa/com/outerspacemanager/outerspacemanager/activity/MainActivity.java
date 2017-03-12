@@ -1,10 +1,14 @@
 package mesa.com.outerspacemanager.outerspacemanager.activity;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -12,6 +16,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import retrofit2.Call;
@@ -41,6 +46,7 @@ public class MainActivity extends Activity {
     private TextView gas;
     private TextView mineral;
 
+
     private User currentUser;
     private Retrofit retrofit;
     private Gson gson;
@@ -48,6 +54,8 @@ public class MainActivity extends Activity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
+
+
 
         // INIT VARIABLES
         gson = new Gson();
@@ -84,6 +92,7 @@ public class MainActivity extends Activity {
         request.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+
                 username.setText(response.body().getUsername());
                 score_value.setText(response.body().getPoints().toString());
                 gas.setText(response.body().getGas().toString() + " gas");
@@ -131,6 +140,14 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent toGalaxieActivity = new Intent(getApplicationContext(),GalaxieActivity.class);
                 startActivity(toGalaxieActivity);
+            }
+        });
+
+        btnFlotte.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
             }
         });
 
