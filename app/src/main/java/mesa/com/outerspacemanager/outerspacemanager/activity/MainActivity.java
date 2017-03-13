@@ -46,6 +46,8 @@ public class MainActivity extends Activity {
     private TextView gas;
     private TextView mineral;
 
+    private TextView gas_modifier;
+    private TextView mineral_modifier;
 
     private User currentUser;
     private Retrofit retrofit;
@@ -63,8 +65,12 @@ public class MainActivity extends Activity {
         username = (TextView) findViewById(R.id.menu_username);
         score_label = (TextView) findViewById(R.id.menu_score);
         score_value = (TextView) findViewById(R.id.menu_score_value);
+
         gas = (TextView) findViewById(R.id.menu_mineral);
         mineral = (TextView) findViewById(R.id.menu_gas);
+
+        gas_modifier = (TextView) findViewById(R.id.menu_mineral_modifier);
+        mineral_modifier = (TextView) findViewById(R.id.menu_gas_modifier);
 
 
         btnVueGeneral = (Button) findViewById(R.id.btnGeneralVue);
@@ -95,8 +101,12 @@ public class MainActivity extends Activity {
 
                 username.setText(response.body().getUsername());
                 score_value.setText(response.body().getPoints().toString());
+
                 gas.setText(response.body().getGas().toString() + " gas");
                 mineral.setText(response.body().getMinerals().toString() + " mineral");
+
+                gas_modifier.setText("x"+response.body().getGasModifier().toString());
+                mineral_modifier.setText("x"+response.body().getMineralsModifier().toString());
             }
 
             @Override
@@ -135,6 +145,13 @@ public class MainActivity extends Activity {
             }
         });
 
+        btnChantierNaval.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toChantierActivity = new Intent(getApplicationContext(),ChantierActivity.class);
+                startActivity(toChantierActivity);
+            }
+        });
         btnGalaxie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

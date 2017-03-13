@@ -19,6 +19,7 @@ public class Building {
     private int timeToBuildByLevel;
     private int timeToBuildLevel0;
     private int buildingId;
+    private String imageUrl;
 
     public String getName(){
         return this.name;
@@ -49,5 +50,13 @@ public class Building {
 
     public int getBuildingId(){
         return this.buildingId;
+    }
+
+    public String getImageUrl(){
+        return this.imageUrl;
+    }
+
+    public boolean isBuilding(){
+        return this.building;
     }
 }

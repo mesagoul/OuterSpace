@@ -54,7 +54,7 @@
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_item_listview);
 
-            refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_buildings_layout);
+            refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_items_layout);
             refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
@@ -66,7 +66,7 @@
             progress = new LoaderProgressBar(this);
             progress.show();
             gson = new Gson();
-            list_buildings = (ListView) findViewById(R.id.list_buildings);
+            list_buildings = (ListView) findViewById(R.id.list_items);
 
             SharedPreferences settings = getSharedPreferences("token", 0);
             token = settings.getString("token", new String());
@@ -77,6 +77,7 @@
                     .build();
 
             service = retrofit.create(Service.class);
+
             list_buildings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

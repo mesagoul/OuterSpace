@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class AdapterViewSearche extends ArrayAdapter<Searche> {
             TextView searche_mineral_cost = (TextView) rowView.findViewById(R.id.building_mineral_cost_value);
             TextView searche_level = (TextView) rowView.findViewById(R.id.building_level);
             TextView searche_time = (TextView) rowView.findViewById(R.id.building_time_value);
+            LinearLayout search_layout = (LinearLayout) rowView.findViewById(R.id.layout_item);
 
             String name = aSearche.getName();
             String effect = aSearche.getEffect();
@@ -48,6 +50,12 @@ public class AdapterViewSearche extends ArrayAdapter<Searche> {
             String mineralCost = aSearche.getMineralsCost().toString();
             String level = aSearche.getLevel().toString();
             String time = aSearche.getTimeToBuild().toString();
+
+            if(aSearche.isBuilding() == true){
+                search_layout.setBackgroundResource(R.color.colorAccent);
+                search_layout.setAlpha(new Float(0.5));
+            }
+
 
             searche_name.setText(name);
             searche_effect.setText(effect);

@@ -18,7 +18,7 @@ public class Searche {
     private String name;
     private int timeToBuildByLevel;
     private int timeToBuildLevel0;
-    private int buildingId;
+    private int searchId;
 
     public String getName(){
         return this.name;
@@ -48,6 +48,10 @@ public class Searche {
     }
 
     public int getSearcheId(){
-        return this.buildingId;
+        return this.searchId;
+    }
+    public boolean isBuilding()
+    {
+        return this.building;
     }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class AdapterViewBuilding extends ArrayAdapter<Building> {
             TextView building_mineral_cost = (TextView) rowView.findViewById(R.id.building_mineral_cost_value);
             TextView building_level = (TextView) rowView.findViewById(R.id.building_level);
             TextView building_time = (TextView) rowView.findViewById(R.id.building_time_value);
+            LinearLayout building_layout = (LinearLayout) rowView.findViewById(R.id.layout_item);
 
             String name = aBuilding.getName();
             String effect = aBuilding.getEffect();
@@ -48,6 +50,12 @@ public class AdapterViewBuilding extends ArrayAdapter<Building> {
             String mineralCost = aBuilding.getMineralsCost().toString();
             String level = aBuilding.getLevel().toString();
             String time = aBuilding.getTimeToBuild().toString();
+
+            if(aBuilding.isBuilding() == true){
+                building_layout.setBackgroundResource(R.color.colorAccent);
+                building_layout.setAlpha(new Float(0.5));
+            }
+
 
             building_name.setText(name);
             building_effect.setText(effect);

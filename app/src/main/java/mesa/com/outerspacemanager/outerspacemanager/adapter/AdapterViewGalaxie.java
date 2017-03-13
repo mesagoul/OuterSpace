@@ -21,12 +21,10 @@ public class AdapterViewGalaxie  extends ArrayAdapter<User> {
         private final Context context;
         private final ArrayList<User> values;
         private User aUser;
-        private Integer cpt;
         public AdapterViewGalaxie(Context context, ArrayList<User> values) {
             super(context, R.layout.adapter_list_galaxie, values);
             this.context = context;
             this.values = values;
-            this.cpt = 0;
         }
 
         @Override
@@ -36,7 +34,6 @@ public class AdapterViewGalaxie  extends ArrayAdapter<User> {
             View rowView = inflater.inflate(R.layout.adapter_list_galaxie, parent, false);
 
             aUser = values.get(position);
-            this.cpt++;
 
             TextView galaxie_point = (TextView) rowView.findViewById(R.id.galaxie_point_value);
             TextView galaxie_name = (TextView) rowView.findViewById(R.id.galaxie_name_value);
@@ -44,7 +41,7 @@ public class AdapterViewGalaxie  extends ArrayAdapter<User> {
 
             galaxie_name.setText(aUser.getUsername());
             galaxie_point.setText(aUser.getPoints().toString());
-            galaxie_rank.setText(cpt.toString());
+            galaxie_rank.setText(String.valueOf(position+1));
 
 
 

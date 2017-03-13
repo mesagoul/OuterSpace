@@ -9,6 +9,8 @@ import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searche;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searches;
+import mesa.com.outerspacemanager.outerspacemanager.model.Ship;
+import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import mesa.com.outerspacemanager.outerspacemanager.model.Users;
 import retrofit2.Call;
@@ -68,6 +70,15 @@ public interface Service {
                 @Header("x-access-token") String token,
                 @Path("searchId") int buildingId
         );
+
+        // SHIPS
+
+        @GET("api/v1/ships")
+        Call<Ships> getShips(
+                @Header("x-access-token") String token
+        );
+
+
 
 
 

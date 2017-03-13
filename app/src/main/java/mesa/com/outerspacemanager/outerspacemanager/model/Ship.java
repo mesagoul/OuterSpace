@@ -17,4 +17,52 @@ public class Ship {
     private int spatioportLevelNeeded;
     private int speed;
     private int timeToBuild;
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getGasCost() {
+        return gasCost;
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public int getMaxAttack() {
+        return maxAttack;
+    }
+
+    public int getMinAttack() {
+        return minAttack;
+    }
+
+    public int getMineralCost() {
+        return mineralCost;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getShield() {
+        return shield;
+    }
+
+    public int getShipId() {
+        return shipId;
+    }
+
+    public int getSpatioportLevelNeeded() {
+        return spatioportLevelNeeded;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public int getTimeToBuild() {
+        return timeToBuild;
+    }
 }
