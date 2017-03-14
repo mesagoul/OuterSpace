@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import mesa.com.outerspacemanager.outerspacemanager.model.Amount.Amount;
 import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searche;
@@ -76,6 +77,18 @@ public interface Service {
         @GET("api/v1/ships")
         Call<Ships> getShips(
                 @Header("x-access-token") String token
+        );
+
+        @GET("api/v1/fleet/list")
+        Call<Ships> getMyShips(
+                @Header("x-access-token") String token
+        );
+
+        @POST("api/v1/ships/create/{shipId}")
+        Call<Ships> buyShip(
+                @Header("x-access-token") String token,
+                @Path("shipId") int shipId,
+                @Body Amount amount
         );
 
 

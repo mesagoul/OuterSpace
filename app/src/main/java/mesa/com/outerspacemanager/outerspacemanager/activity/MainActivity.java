@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -49,8 +50,12 @@ public class MainActivity extends Activity {
     private TextView gas_modifier;
     private TextView mineral_modifier;
 
+    private SwipeRefreshLayout refreshLayout;
+
     private User currentUser;
     private Retrofit retrofit;
+    private Service service;
+    private String token;
     private Gson gson;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +88,7 @@ public class MainActivity extends Activity {
 
         // GET TOKEN
         SharedPreferences settings = getSharedPreferences("token", 0);
-        String token = settings.getString("token", new String());
+        token = settings.getString("token", new String());
 
 
         // CALL API
@@ -92,28 +97,21 @@ public class MainActivity extends Activity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        Service service = retrofit.create(Service.class);
-        Call<User> request = service.getUser(token);
+        service = retrofit.create(Service.class);
 
-        request.enqueue(new Callback<User>() {
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_main);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-
-                username.setText(response.body().getUsername());
-                score_value.setText(response.body().getPoints().toString());
-
-                gas.setText(response.body().getGas().toString() + " gas");
-                mineral.setText(response.body().getMinerals().toString() + " mineral");
-
-                gas_modifier.setText("x"+response.body().getGasModifier().toString());
-                mineral_modifier.setText("x"+response.body().getMineralsModifier().toString());
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onRefresh() {
+                refreshUser();
 
             }
         });
+
+
+
+
 
 
 
@@ -159,15 +157,51 @@ public class MainActivity extends Activity {
                 startActivity(toGalaxieActivity);
             }
         });
-
+        btnGalaxie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toGalaxieActivity = new Intent(getApplicationContext(),GalaxieActivity.class);
+                startActivity(toGalaxieActivity);
+            }
+        });
         btnFlotte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                Intent toFlotteActivity = new Intent(getApplicationContext(),FlotteActivity.class);
+                startActivity(toFlotteActivity);
             }
         });
 
+
+
+        refreshUser();
+
+
+    }
+
+    public void refreshUser(){
+        Call<User> request = service.getUser(token);
+
+        request.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                refreshLayout.setRefreshing(false);
+
+                username.setText(response.body().getUsername());
+                score_value.setText(response.body().getPoints().toString());
+
+                gas.setText(response.body().getGas().toString() + " gas");
+                mineral.setText(response.body().getMinerals().toString() + " mineral");
+
+                gas_modifier.setText("x"+response.body().getGasModifier().toString());
+                mineral_modifier.setText("x"+response.body().getMineralsModifier().toString());
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
 
     }
 }

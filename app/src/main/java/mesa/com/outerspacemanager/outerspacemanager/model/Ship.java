@@ -1,10 +1,12 @@
 package mesa.com.outerspacemanager.outerspacemanager.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Lucas on 08/03/2017.
  */
 
-public class Ship {
+public class Ship implements Serializable {
     private int capacity;
     private int gasCost;
     private int life;

@@ -50,25 +50,37 @@ public class AdapterViewChantier extends ArrayAdapter<Ship> {
 
         aShip = values.get(position);
 
-        ship_life_value.setText(String.valueOf(aShip.getLife()));
-        ship_cost_gas.setText(String.valueOf(aShip.getGasCost()));
-        ship_cost_mineral.setText(String.valueOf(aShip.getMineralCost()));
+        if(ship_life_value != null){
+            ship_life_value.setText(String.valueOf(aShip.getLife()));
+        }
+        if(ship_cost_gas != null){
+            ship_cost_gas.setText(String.valueOf(aShip.getGasCost()));
+        }
+        if(ship_cost_mineral != null){
+            ship_cost_mineral.setText(String.valueOf(aShip.getMineralCost()));
+        }
         ship_name.setText(aShip.getName());
 
+        if (ship_image != null) {
+            Glide
+                    .with(getContext())
+                    .load("https://cdn.pixabay.com/photo/2012/04/10/17/23/spaceship-26556_960_720.png")
+                    .centerCrop()
+                    .crossFade()
+                    .into(ship_image);
+        }
 
-        Glide
-                .with(getContext())
-                .load("https://cdn.pixabay.com/photo/2012/04/10/17/23/spaceship-26556_960_720.png")
-                .centerCrop()
-                .crossFade()
-                .into(ship_image);
+        if(ship_life_image != null){
+            Glide
+                    .with(getContext())
+                    .load("https://s-media-cache-ak0.pinimg.com/originals/ff/8d/e7/ff8de7deab4afdc484bc1b1aa9637491.png")
+                    .centerCrop()
+                    .crossFade()
+                    .into(ship_life_image);
 
-        Glide
-                .with(getContext())
-                .load("https://s-media-cache-ak0.pinimg.com/originals/ff/8d/e7/ff8de7deab4afdc484bc1b1aa9637491.png")
-                .centerCrop()
-                .crossFade()
-                .into(ship_life_image);
+        }
+
+
 
         return rowView;
     }

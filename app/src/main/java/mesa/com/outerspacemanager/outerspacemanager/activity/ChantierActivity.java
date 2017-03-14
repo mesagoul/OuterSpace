@@ -1,109 +1,55 @@
 package mesa.com.outerspacemanager.outerspacemanager.activity;
 
-import android.app.Activity;
-import android.content.Loader;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewChantier;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentShipList;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.Fragment_ship_detail;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ship;
-import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
-import mesa.com.outerspacemanager.outerspacemanager.network.Service;
-import mesa.com.outerspacemanager.outerspacemanager.utils.LoaderProgressBar;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 /**
  * Created by Lucas on 13/03/2017.
  */
 
-public class ChantierActivity extends Activity {
-    private LoaderProgressBar progress;
-    private ListView list_ships;
-    private String token;
-    private Retrofit retrofit;
-    private Service service;
-    private ArrayList<Ship> myShips;
-    private SwipeRefreshLayout refreshLayout;
+public class ChantierActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_listview);
-        progress = new LoaderProgressBar(this);
-        progress.show();
-
-
-        list_ships = (ListView) findViewById(R.id.list_items);
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_items_layout);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshListShips();
-
-            }
-        });
-
-
-        SharedPreferences settings = getSharedPreferences("token", 0);
-        token = settings.getString("token", new String());
-
-        retrofit = new Retrofit.Builder()
-                .baseUrl("https://outer-space-manager.herokuapp.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(Service.class);
-
-
-        list_ships.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-               // currentBuilding = myBuildings.get(position);
-               // onBuildingClick();
-            }
-        });
-
-        refreshListShips();
-
-
-
-
+        setContentView(R.layout.activity_chantier);
     }
-    public void refreshListShips(){
 
-        Call<Ships> request = service.getShips(token);
 
-        request.enqueue(new Callback<Ships>() {
-            @Override
-            public void onResponse(Call<Ships> call, Response<Ships> response) {
-                refreshLayout.setRefreshing(false);
-                progress.dismiss();
-                if (response.isSuccessful()) {
-                    myShips = response.body().getShips();
-                    list_ships.setAdapter(new AdapterViewChantier(getApplicationContext(), myShips));
-                } else {
-                    Toast.makeText(getApplicationContext(), String.format("Erreur lors de la récupération des vaisseaux"), Toast.LENGTH_SHORT).show();
-                }
-            }
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        FragmentShipList fragment_itemList = (FragmentShipList) getSupportFragmentManager().findFragmentById(R.id.fragment_ship_list);
+        Fragment_ship_detail fragment_ship_detail = (Fragment_ship_detail) getSupportFragmentManager().findFragmentById(R.id.fragment_ship_detail);
+        if (fragment_ship_detail == null || !fragment_ship_detail.isInLayout()) {
+            Intent i = new Intent(getApplicationContext(), ShipDetailActivity.class);
+            i.putExtra("ship", fragment_itemList.getShips().get(position));
+            i.putExtra("currentUserMinreals", fragment_itemList.getCurrentUserMinerals());
+            i.putExtra("currentUserGas", fragment_itemList.getCurrentUserGas());
+            startActivity(i);
+        } else {
+            fragment_ship_detail.setShip(fragment_itemList.getShips().get(position));
+            fragment_ship_detail.updateSeekBarMax(fragment_itemList.getCurrentUserMinerals(), fragment_itemList.getCurrentUserGas());
+        }
+    }
 
-            @Override
-            public void onFailure(Call<Ships> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), String.format("Erreur lors de la récupération des vaisseaux"), Toast.LENGTH_SHORT).show();
-            }
-        });
+    public void shipsFetched(ArrayList<Ship> myShips, Double minerals, Double gas) {
+        Fragment_ship_detail fragment_ship_detail = (Fragment_ship_detail) getSupportFragmentManager().findFragmentById(R.id.fragment_ship_detail);
+        if (fragment_ship_detail != null && fragment_ship_detail.isInLayout()) {
+            fragment_ship_detail.setShip(myShips.get(0));
+            fragment_ship_detail.updateSeekBarMax(minerals,gas);
+        }
     }
 }
