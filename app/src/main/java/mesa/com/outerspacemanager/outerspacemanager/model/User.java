@@ -20,7 +20,7 @@ public class User {
     private Integer gasModifier;
     private Float minerals;
     private Integer mineralsModifier;
-    private Integer points;
+    private Double points;
 
 
     public User(String username, String password){
@@ -46,7 +46,7 @@ public class User {
     public Integer getMineralsModifier(){
         return this.mineralsModifier;
     }
-    public Integer getPoints(){
+    public Double getPoints(){
         return this.points;
     }
 }

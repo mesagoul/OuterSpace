@@ -1,16 +1,10 @@
 package mesa.com.outerspacemanager.outerspacemanager.network;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import mesa.com.outerspacemanager.outerspacemanager.model.Amount.Amount;
+import mesa.com.outerspacemanager.outerspacemanager.model.Amount;
 import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searche;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searches;
-import mesa.com.outerspacemanager.outerspacemanager.model.Ship;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import mesa.com.outerspacemanager.outerspacemanager.model.Users;
@@ -90,6 +84,17 @@ public interface Service {
                 @Path("shipId") int shipId,
                 @Body Amount amount
         );
+
+        // ATTAQUE
+
+        @POST("api/v1/fleet/attack/{userName}")
+        Call<Ships> attaqueUser(
+                @Header("x-access-token") String token,
+                @Path("userName") String username,
+                @Body Ships ships
+        );
+
+
 
 
 

@@ -1,14 +1,11 @@
 package mesa.com.outerspacemanager.outerspacemanager.activity;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +14,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import retrofit2.Call;
@@ -47,6 +43,9 @@ public class MainActivity extends Activity {
     private TextView gas;
     private TextView mineral;
 
+    private Handler handler;
+    private Runnable runnable;
+
     private TextView gas_modifier;
     private TextView mineral_modifier;
 
@@ -57,10 +56,25 @@ public class MainActivity extends Activity {
     private Service service;
     private String token;
     private Gson gson;
+    boolean isHandlerRun;
+
+    private Double mineralGenerated;
+    private Double gasGenerated;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
+
+        isHandlerRun = false;
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                updateRessources();
+                handler.postDelayed(this,100);
+            }
+        };
 
 
 
@@ -108,12 +122,6 @@ public class MainActivity extends Activity {
 
             }
         });
-
-
-
-
-
-
 
 
         btnLogOut.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +187,19 @@ public class MainActivity extends Activity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        refreshUser();
+    }
+
+    public void updateRessources(){
+        this.gasGenerated += 0.05;
+        this.mineralGenerated += 0.08;
+        this.gas.setText(String.format("%.2f",this.gasGenerated) + " gas");
+        this.mineral.setText(String.format("%.2f",this.mineralGenerated) + " mineral");
+    }
+
     public void refreshUser(){
         Call<User> request = service.getUser(token);
 
@@ -190,11 +211,19 @@ public class MainActivity extends Activity {
                 username.setText(response.body().getUsername());
                 score_value.setText(response.body().getPoints().toString());
 
-                gas.setText(response.body().getGas().toString() + " gas");
-                mineral.setText(response.body().getMinerals().toString() + " mineral");
+                gasGenerated = response.body().getGas().doubleValue();
+                mineralGenerated = response.body().getMinerals().doubleValue();
+
+                gas.setText(String.format("%.2f",gasGenerated)  + " gas");
+                mineral.setText(String.format("%.2f",mineralGenerated) + " mineral");
 
                 gas_modifier.setText("x"+response.body().getGasModifier().toString());
                 mineral_modifier.setText("x"+response.body().getMineralsModifier().toString());
+
+                if(!isHandlerRun){
+                    handler.post(runnable);
+                    isHandlerRun = true;
+                }
             }
 
             @Override

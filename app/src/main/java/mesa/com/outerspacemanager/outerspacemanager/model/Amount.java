@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.model.Amount;
+package mesa.com.outerspacemanager.outerspacemanager.model;
 
 /**
  * Created by Lucas on 14/03/2017.

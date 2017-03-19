@@ -13,7 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.model.Amount.Amount;
+import mesa.com.outerspacemanager.outerspacemanager.model.Amount;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ship;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
@@ -132,6 +132,8 @@ public class Fragment_ship_detail extends Fragment {
             @Override
             public void onResponse(Call<Ships> call, Response<Ships> response) {
                 Toast.makeText(getContext(), String.format("Vos vaisseaux sont en construction"), Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+
             }
 
             @Override

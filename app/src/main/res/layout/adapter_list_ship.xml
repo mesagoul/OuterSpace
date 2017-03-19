@@ -2,11 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
     android:orientation="horizontal">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/layout_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,18 +14,21 @@
 
 
     <ImageView
-            android:paddingLeft="15dp"
-            android:layout_weight="4"
             android:id="@+id/ship_image_url"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+        <TextView
+            android:textColor="@color/colorWhite"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorBlack"
+            android:alpha="0.7"/>
 
 
     <LinearLayout
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1.5"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -36,6 +37,7 @@
             android:weightSum="1">
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/ship_life_value"
                 android:padding="10dp"
                 android:textSize="15dp"
@@ -60,6 +62,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/ship_name_label"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -67,6 +70,7 @@
                 android:text="Nom :" />
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/ship_name_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,6 +85,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/ship_cost_gas_label"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -88,6 +93,7 @@
                 android:text="Coût (gas) :" />
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/ship_cost_gas_value"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -103,6 +109,7 @@
             android:orientation="horizontal">
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/ship_cost_mineral_label"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
@@ -110,6 +117,7 @@
                 android:text="Coût (mineral):" />
 
             <TextView
+                android:textColor="@color/colorWhite"
                 android:id="@+id/ship_cost_mineral_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,7 +125,7 @@
 
         </LinearLayout>
     </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>

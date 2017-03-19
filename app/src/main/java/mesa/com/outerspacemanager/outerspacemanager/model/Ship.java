@@ -1,6 +1,7 @@
 package mesa.com.outerspacemanager.outerspacemanager.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Lucas on 08/03/2017.
@@ -19,6 +20,23 @@ public class Ship implements Serializable {
     private int spatioportLevelNeeded;
     private int speed;
     private int timeToBuild;
+    private int amount;
+    private ArrayList<String> urlImages;
+
+    public Ship(int id, int amount){
+        this.shipId = id;
+        this.amount = amount;
+    }
+
+    public String getUrlImage(){
+        this.urlImages = new ArrayList<String>();
+        this.urlImages.add("https://s-media-cache-ak0.pinimg.com/originals/e0/3e/70/e03e7026394c97aab0a52a5a4283d24b.jpg");
+        this.urlImages.add("http://www.vive-internet-gratuit.com/images/dessins/Vaisseau-spatial_49.jpg");
+        this.urlImages.add("http://poopss.p.o.pic.centerblog.net/o/e04b1581.jpg");
+        this.urlImages.add("http://www.stargate-fusion.com/images/news/divers/x301-schema-grand.jpg");
+        this.urlImages.add("https://www.quizz.biz/uploads/quizz/140918/2_D9Z1T.jpg");
+        return this.urlImages.get(this.shipId);
+    }
 
     public int getCapacity() {
         return capacity;
@@ -66,5 +84,9 @@ public class Ship implements Serializable {
 
     public int getTimeToBuild() {
         return timeToBuild;
+    }
+
+    public int getAmount() {
+        return this.amount;
     }
 }

@@ -32,6 +32,7 @@ public class AdapterViewChantier extends ArrayAdapter<Ship> {
         super(context, R.layout.adapter_list_item, values);
         this.context = context;
         this.values = values;
+
     }
 
     @Override
@@ -64,7 +65,7 @@ public class AdapterViewChantier extends ArrayAdapter<Ship> {
         if (ship_image != null) {
             Glide
                     .with(getContext())
-                    .load("https://cdn.pixabay.com/photo/2012/04/10/17/23/spaceship-26556_960_720.png")
+                    .load(aShip.getUrlImage())
                     .centerCrop()
                     .crossFade()
                     .into(ship_image);

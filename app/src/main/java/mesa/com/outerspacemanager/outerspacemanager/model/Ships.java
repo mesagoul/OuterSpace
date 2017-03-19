@@ -12,6 +12,10 @@ public class Ships {
     private Double currentUserMinerals;
     private Double currentUserGas;
 
+    public Ships(){
+        this.ships = new ArrayList<Ship>();
+    }
+
 
     public ArrayList<Ship> getShips(){
         return this.ships;
@@ -26,6 +30,10 @@ public class Ships {
     }
     public Double getCurrentUserGas(){
         return this.currentUserGas;
+    }
+
+    public void addShip(Ship ship){
+        this.ships.add(ship);
     }
 }
 

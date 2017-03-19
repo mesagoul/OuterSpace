@@ -1,12 +1,17 @@
 package mesa.com.outerspacemanager.outerspacemanager.adapter;
 
 import android.content.Context;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -43,6 +48,7 @@ public class AdapterViewBuilding extends ArrayAdapter<Building> {
             TextView building_level = (TextView) rowView.findViewById(R.id.building_level);
             TextView building_time = (TextView) rowView.findViewById(R.id.building_time_value);
             LinearLayout building_layout = (LinearLayout) rowView.findViewById(R.id.layout_item);
+            ImageView building_image = (ImageView) rowView.findViewById(R.id.building_image);
 
             String name = aBuilding.getName();
             String effect = aBuilding.getEffect();
@@ -55,6 +61,13 @@ public class AdapterViewBuilding extends ArrayAdapter<Building> {
                 building_layout.setBackgroundResource(R.color.colorAccent);
                 building_layout.setAlpha(new Float(0.5));
             }
+
+            Glide
+                    .with(getContext())
+                    .load(aBuilding.getImageUrl())
+                    .centerCrop()
+                    .crossFade()
+                    .into(building_image);
 
 
             building_name.setText(name);
