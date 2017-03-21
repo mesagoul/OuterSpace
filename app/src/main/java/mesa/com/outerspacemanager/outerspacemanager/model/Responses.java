@@ -8,5 +8,5 @@ import java.util.ArrayList;
 
 public class Responses {
     private int size;
-    private ArrayList<Response> text;
+    private ArrayList<AttackResponse> text;
 }

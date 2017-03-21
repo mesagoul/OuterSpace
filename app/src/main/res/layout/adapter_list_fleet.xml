@@ -5,7 +5,7 @@
     <RelativeLayout
         android:id="@+id/transition_container"
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="150dp">
         <ImageView
             android:id="@+id/ship_image"
             android:layout_width="match_parent"

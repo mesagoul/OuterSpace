@@ -3,6 +3,7 @@ package mesa.com.outerspacemanager.outerspacemanager.network;
 import mesa.com.outerspacemanager.outerspacemanager.model.Amount;
 import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
+import mesa.com.outerspacemanager.outerspacemanager.model.AttackResponse;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searche;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searches;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
@@ -88,7 +89,7 @@ public interface Service {
         // ATTAQUE
 
         @POST("api/v1/fleet/attack/{userName}")
-        Call<Ships> attaqueUser(
+        Call<AttackResponse> attaqueUser(
                 @Header("x-access-token") String token,
                 @Path("userName") String username,
                 @Body Ships ships

@@ -179,6 +179,13 @@ public class MainActivity extends Activity {
                 startActivity(toFlotteActivity);
             }
         });
+        btnVueGeneral.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toGeneralActivity = new Intent(getApplicationContext(),GeneralActivity.class);
+                startActivity(toGeneralActivity);
+            }
+        });
 
 
 

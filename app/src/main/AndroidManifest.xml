@@ -2,6 +2,7 @@
 
     package="mesa.com.outerspacemanager.outerspacemanager">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -52,6 +53,14 @@
         android:name="mesa.com.outerspacemanager.outerspacemanager.activity.FlotteActivity"
         android:label="@string/app_name" >
     </activity>
+        <activity
+            android:name="mesa.com.outerspacemanager.outerspacemanager.activity.GeneralActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name="mesa.com.outerspacemanager.outerspacemanager.activity.AttackDetailActivity"
+            android:label="@string/app_name" >
+        </activity>
 
 
     </application>

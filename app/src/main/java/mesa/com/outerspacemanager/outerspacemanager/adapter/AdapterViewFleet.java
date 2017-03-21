@@ -26,8 +26,6 @@
         private final Context context;
         private final ArrayList<Ship> values;
         private Ship aShip;
-        private  ArrayList<String> urlImages;
-        private Random r = new Random();
 
 
 
@@ -35,12 +33,6 @@
             super(context, R.layout.adapter_list_fleet, values);
             this.context = context;
             this.values = values;
-            urlImages = new ArrayList<String>();
-            urlImages.add("https://s-media-cache-ak0.pinimg.com/originals/e0/3e/70/e03e7026394c97aab0a52a5a4283d24b.jpg");
-            urlImages.add("http://www.vive-internet-gratuit.com/images/dessins/Vaisseau-spatial_49.jpg");
-            urlImages.add("http://poopss.p.o.pic.centerblog.net/o/e04b1581.jpg");
-            urlImages.add("http://www.stargate-fusion.com/images/news/divers/x301-schema-grand.jpg");
-            urlImages.add("https://www.quizz.biz/uploads/quizz/140918/2_D9Z1T.jpg");
 
         }
 
@@ -70,7 +62,11 @@
 
 
             aShip = values.get(position);
+            aShip.getUrlImage();
             ship_amount.setText(String.valueOf(aShip.getAmount()));
+            if(aShip.getAmount() == 0){
+                seekBar.setVisibility(View.GONE);
+            }
             ship_name.setText(aShip.getName());
             seekBar.setMax(aShip.getAmount());
             seekBar.setProgress(aShip.getAmount());
@@ -98,7 +94,7 @@
 
                 Glide
                         .with(getContext())
-                        .load(urlImages.get(aShip.getShipId()))
+                        .load(aShip.getUrlImage())
                         .centerCrop()
                         .crossFade()
                         .into(ship_image);
