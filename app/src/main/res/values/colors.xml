@@ -6,4 +6,23 @@
     <color name="colorDark">#333333</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000000</color>
+    <color name="colorGreen">#6EEB83</color>
+    <color name="colorRed">#EF2D56</color>
+    <color name="colorBlue">#3E92CC</color>
+
+
+
+    <!-- OVERWRITE THESE COLORS FOR A DARK THEME -->
+    <!-- MaterialDrawer DEFAULT DARK colors -->
+    <color name="material_drawer_dark_background">#303030</color>
+    <!-- MaterialDrawer DEFAULT DARK text / items colors -->
+    <color name="material_drawer_dark_primary_text">#8AFFFFFF</color>
+    <color name="material_drawer_dark_primary_icon">#8AFFFFFF</color>
+    <color name="material_drawer_dark_secondary_text">#000</color>
+    <color name="material_drawer_dark_hint_text">#42FFFFFF</color>
+    <color name="material_drawer_dark_divider">@color/colorBlue</color>
+    <!-- MaterialDrawer DEFAULT DARK drawer colors -->
+    <color name="material_drawer_dark_selected">#303030</color>
+    <color name="material_drawer_dark_selected_text">@color/colorBlue</color>
+    <color name="material_drawer_dark_header_selection_text">#FFF</color>
 </resources>

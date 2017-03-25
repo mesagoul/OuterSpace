@@ -1,21 +1,33 @@
 package mesa.com.outerspacemanager.outerspacemanager.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+
+import mesa.com.outerspacemanager.outerspacemanager.OnGeneralClickedListener;
 import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksDetail;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksList;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportDetail;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportList;
+import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
+import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
+import mesa.com.outerspacemanager.outerspacemanager.utils.CustomDrawer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,32 +38,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Lucas on 06/03/2017.
  */
 
-public class MainActivity extends Activity {
-
-    private TextView username;
-    private TextView score_label;
-    private TextView score_value;
-
-    private Button btnVueGeneral;
-    private Button btnBatiment;
-    private Button btnFlotte;
-    private Button btnRecherches;
-    private Button btnChantierNaval;
-    private Button btnGalaxie;
-    private Button btnLogOut;
-
-    private TextView gas;
-    private TextView mineral;
+public class MainActivity extends FragmentActivity implements OnGeneralClickedListener {
 
     private Handler handler;
     private Runnable runnable;
-
-    private TextView gas_modifier;
-    private TextView mineral_modifier;
-
-    private SwipeRefreshLayout refreshLayout;
-
-    private User currentUser;
     private Retrofit retrofit;
     private Service service;
     private String token;
@@ -60,45 +50,49 @@ public class MainActivity extends Activity {
 
     private Double mineralGenerated;
     private Double gasGenerated;
+    private CustomDrawer drawer;
+
+    private ArrayList<Fragment> listFragments;
+
+
+    // VIEW PAGER
+    private ViewPager mPager;
+    private PagerAdapter mPagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
 
+        listFragments = new ArrayList<Fragment>();
+        listFragments.add(new FragmentCurrentAttacksList());
+        listFragments.add(new FragmentRapportList());
+
+        gson = new Gson();
+
+
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager) findViewById(R.id.main_pager);
+        mPager.setPageTransformer(true,new ZoomOutPageTransformer());
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), listFragments);
+        mPager.setAdapter(mPagerAdapter);
+
+        // Instantiate Drawer
+        drawer = new CustomDrawer(this);
+        drawer.load();
+
+
+        // Instantiate Handler & Runnable
         isHandlerRun = false;
         handler = new Handler();
         runnable = new Runnable() {
             @Override
             public void run() {
                 updateRessources();
-                handler.postDelayed(this,100);
+                handler.postDelayed(this,1000);
             }
         };
 
-
-
-        // INIT VARIABLES
-        gson = new Gson();
-
-        username = (TextView) findViewById(R.id.menu_username);
-        score_label = (TextView) findViewById(R.id.menu_score);
-        score_value = (TextView) findViewById(R.id.menu_score_value);
-
-        gas = (TextView) findViewById(R.id.menu_mineral);
-        mineral = (TextView) findViewById(R.id.menu_gas);
-
-        gas_modifier = (TextView) findViewById(R.id.menu_mineral_modifier);
-        mineral_modifier = (TextView) findViewById(R.id.menu_gas_modifier);
-
-
-        btnVueGeneral = (Button) findViewById(R.id.btnGeneralVue);
-        btnBatiment = (Button) findViewById(R.id.btn_batiments);
-        btnFlotte = (Button) findViewById(R.id.btn_flotte);
-        btnRecherches = (Button) findViewById(R.id.btn_recherches);
-        btnChantierNaval = (Button) findViewById(R.id.btn_chantier_spatial);
-        btnGalaxie = (Button) findViewById(R.id.btn_galaxie);
-        btnLogOut = (Button) findViewById(R.id.btn_logout);
 
         // GET TOKEN
         SharedPreferences settings = getSharedPreferences("token", 0);
@@ -113,86 +107,19 @@ public class MainActivity extends Activity {
 
         service = retrofit.create(Service.class);
 
-
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_main);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshUser();
-
-            }
-        });
-
-
-        btnLogOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                SharedPreferences settings = getSharedPreferences("token", 0);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("token", "");
-                editor.commit();
-                finish();
-            }
-        });
-
-        btnRecherches.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toSearcheActivity = new Intent(getApplicationContext(),SearcheActivity.class);
-                startActivity(toSearcheActivity);
-            }
-        });
-
-        btnBatiment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toBuildingActivity = new Intent(getApplicationContext(),BuildingActivity.class);
-                startActivity(toBuildingActivity);
-            }
-        });
-
-        btnChantierNaval.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toChantierActivity = new Intent(getApplicationContext(),ChantierActivity.class);
-                startActivity(toChantierActivity);
-            }
-        });
-        btnGalaxie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toGalaxieActivity = new Intent(getApplicationContext(),GalaxieActivity.class);
-                startActivity(toGalaxieActivity);
-            }
-        });
-        btnGalaxie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toGalaxieActivity = new Intent(getApplicationContext(),GalaxieActivity.class);
-                startActivity(toGalaxieActivity);
-            }
-        });
-        btnFlotte.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toFlotteActivity = new Intent(getApplicationContext(),FlotteActivity.class);
-                startActivity(toFlotteActivity);
-            }
-        });
-        btnVueGeneral.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toGeneralActivity = new Intent(getApplicationContext(),GeneralActivity.class);
-                startActivity(toGeneralActivity);
-            }
-        });
-
-
-
         refreshUser();
 
 
+
     }
+
+    @Override
+    public void onBackPressed() {
+        if (mPager.getCurrentItem() != 0){
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -201,10 +128,37 @@ public class MainActivity extends Activity {
     }
 
     public void updateRessources(){
-        this.gasGenerated += 0.05;
-        this.mineralGenerated += 0.08;
-        this.gas.setText(String.format("%.2f",this.gasGenerated) + " gas");
-        this.mineral.setText(String.format("%.2f",this.mineralGenerated) + " mineral");
+        this.gasGenerated += (0.5);
+        this.mineralGenerated += (0.8);
+        drawer.updateGasUser(String.valueOf(this.gasGenerated.intValue()));
+        drawer.updateMineralUser(String.valueOf(this.mineralGenerated.intValue()));
+
+    }
+    @Override
+    public void onAttackClicked(Attack atk) {
+        FragmentCurrentAttacksList fragment_list = (FragmentCurrentAttacksList) getSupportFragmentManager().findFragmentById(R.id.fragment_generals);
+        FragmentCurrentAttacksDetail fragment_detail = (FragmentCurrentAttacksDetail) getSupportFragmentManager().findFragmentById(R.id.fragment_generals_detail);
+        if (fragment_detail == null || !fragment_detail.isInLayout()) {
+            Intent i = new Intent(getApplicationContext(), AttackDetailActivity.class);
+            i.putExtra("attack", gson.toJson(atk));
+            startActivity(i);
+        } else {
+            fragment_detail.setAttack(atk);
+        }
+    }
+
+    @Override
+    public void onReportClicked(Report report) {
+        FragmentRapportList fragment_list = (FragmentRapportList) getSupportFragmentManager().findFragmentById(R.id.fragment_generals);
+        FragmentRapportDetail fragment_detail = (FragmentRapportDetail) getSupportFragmentManager().findFragmentById(R.id.fragment_generals_detail);
+        if (fragment_detail == null || !fragment_detail.isInLayout()) {
+            Intent i = new Intent(getApplicationContext(), ReportDetailActivity.class);
+            i.putExtra("report", gson.toJson(report));
+            startActivity(i);
+        } else {
+            fragment_detail.setReport(report);
+        }
+
     }
 
     public void refreshUser(){
@@ -213,19 +167,14 @@ public class MainActivity extends Activity {
         request.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                refreshLayout.setRefreshing(false);
 
-                username.setText(response.body().getUsername());
-                score_value.setText(response.body().getPoints().toString());
+
+                drawer.setNameUser(response.body().getUsername());
+                drawer.updateGasUser(response.body().getGas().toString());
+                drawer.setScoreUser(String.valueOf(response.body().getPoints()));
 
                 gasGenerated = response.body().getGas().doubleValue();
                 mineralGenerated = response.body().getMinerals().doubleValue();
-
-                gas.setText(String.format("%.2f",gasGenerated)  + " gas");
-                mineral.setText(String.format("%.2f",mineralGenerated) + " mineral");
-
-                gas_modifier.setText("x"+response.body().getGasModifier().toString());
-                mineral_modifier.setText("x"+response.body().getMineralsModifier().toString());
 
                 if(!isHandlerRun){
                     handler.post(runnable);
@@ -239,5 +188,27 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+    /**
+     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
+     * sequence.
+     */
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        private ArrayList<Fragment> listFragments;
+
+        public ScreenSlidePagerAdapter(FragmentManager fm, ArrayList<Fragment> listFragments) {
+            super(fm);
+            this.listFragments = listFragments;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return listFragments.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return listFragments.size();
+        }
     }
 }

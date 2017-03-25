@@ -4,6 +4,8 @@ import mesa.com.outerspacemanager.outerspacemanager.model.Amount;
 import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
 import mesa.com.outerspacemanager.outerspacemanager.model.AttackResponse;
+import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
+import mesa.com.outerspacemanager.outerspacemanager.model.Report.Reports;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searche;
 import mesa.com.outerspacemanager.outerspacemanager.model.Searches;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
@@ -94,6 +96,17 @@ public interface Service {
                 @Path("userName") String username,
                 @Body Ships ships
         );
+
+
+        // REPORTS
+        @GET("/api/v1/reports/{from}/{limit}")
+        Call<Reports> getReports(
+                @Header("x-access-token") String token,
+                @Path("from") String from,
+                @Path("limit") String limit
+        );
+
+
 
 
 

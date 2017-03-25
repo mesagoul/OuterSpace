@@ -8,16 +8,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.activity.ConnexionActivity;
-import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
-import mesa.com.outerspacemanager.outerspacemanager.utils.LoaderProgressBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,14 +27,18 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SignUpActivity extends Activity {
 
-    private Button btn_inscription;
-    private Button btn_connexion;
+
+    // UI ELEMENTS
     private EditText username;
     private EditText password;
-    private User user;
-    private Retrofit retrofit;
-    private Gson gson;
-    private LoaderProgressBar progress;
+    private ProgressBar progressBar;
+    private LinearLayout layout_connexion;
+
+    //  NETWORK
+    Service service;
+
+    // VARIABLES
+    private User currentUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,61 +55,105 @@ public class SignUpActivity extends Activity {
 
         username = (EditText) findViewById(R.id.input_identifiant);
         password = (EditText) findViewById(R.id.input_mdp);
-        btn_inscription = (Button) findViewById(R.id.btn_inscription);
-        btn_connexion = (Button) findViewById(R.id.btn_connexion);
-        gson = new Gson();
-        progress = new LoaderProgressBar(this);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        layout_connexion = (LinearLayout) findViewById(R.id.layout_connexion);
+        Button btn_inscription = (Button) findViewById(R.id.btn_inscription);
+        Button btn_connexion = (Button) findViewById(R.id.btn_connexion);
+
+        progressBar.setVisibility(View.GONE);
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://outer-space-manager.herokuapp.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        service = retrofit.create(Service.class);
 
 
 
         btn_connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toInscriptionActivity = new Intent(getApplicationContext(),ConnexionActivity.class);
-                startActivity(toInscriptionActivity);
+                currentUser = new User(username.getText().toString(),password.getText().toString());
+                progressBar.setVisibility(View.VISIBLE);
+                layout_connexion.setVisibility(View.GONE);
+                connexion();
             }
         });
 
         btn_inscription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progress.show();
-                user = new User(username.getText().toString(),password.getText().toString());
-                retrofit = new Retrofit.Builder()
-                        .baseUrl("https://outer-space-manager.herokuapp.com/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-                Service service = retrofit.create(Service.class);
-                Call<User> request = service.createUserAccount(user);
+                currentUser = new User(username.getText().toString(),password.getText().toString());
+                progressBar.setVisibility(View.VISIBLE);
+                layout_connexion.setVisibility(View.GONE);
+                inscription();
 
-                request.enqueue(new Callback<User>() {
-
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                       progress.dismiss();
-                        if(response.isSuccessful()){
-                            SharedPreferences settings = getSharedPreferences("token", 0);
-                            SharedPreferences.Editor editor = settings.edit();
-
-                            editor.putString("token", response.body().getToken());
-                            editor.commit();
-
-                            Intent IntentMainActivity = new Intent(getApplicationContext(),MainActivity.class);
-                            startActivity(IntentMainActivity);
-                        }else{
-                            Toast.makeText(getApplicationContext(), String.format("Erreur lors de l'authentification"), Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), String.format("Erreur"), Toast.LENGTH_SHORT).show();
-
-                    }
-                });
             }
         });
 
+    }
+
+    public void connexion(){
+        Call<User> request = service.connectUserAccount(currentUser);
+
+        request.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                progressBar.setVisibility(View.GONE);
+
+                if (response.isSuccessful()) {
+                    SharedPreferences settings = getSharedPreferences("token", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+
+                    editor.putString("token", response.body().getToken());
+                    editor.commit();
+
+                    Intent toMainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(toMainActivity);
+                } else {
+                    layout_connexion.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), String.format("Erreur lors la connexion"), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), String.format("Erreur lors la connexion"), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+    public void inscription(){
+        Call<User> request = service.createUserAccount(currentUser);
+
+        request.enqueue(new Callback<User>() {
+
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                progressBar.setVisibility(View.GONE);
+                if(response.isSuccessful()){
+                    SharedPreferences settings = getSharedPreferences("token", 0);
+                    SharedPreferences.Editor editor = settings.edit();
+
+                    editor.putString("token", response.body().getToken());
+                    editor.commit();
+
+                    Intent IntentMainActivity = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(IntentMainActivity);
+                }else{
+                    layout_connexion.setVisibility(View.VISIBLE);
+                    Toast.makeText(getApplicationContext(), String.format("Erreur lors de l'authentification"), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), String.format("Erreur"), Toast.LENGTH_SHORT).show();
+
+            }
+        });
     }
 }

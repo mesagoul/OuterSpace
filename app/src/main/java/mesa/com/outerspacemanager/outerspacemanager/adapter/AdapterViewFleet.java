@@ -2,6 +2,7 @@
 
     import android.content.Context;
     import android.os.Handler;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -13,6 +14,7 @@
     import com.bumptech.glide.Glide;
 
     import java.util.ArrayList;
+    import java.util.HashMap;
     import java.util.Random;
 
     import mesa.com.outerspacemanager.outerspacemanager.R;
@@ -26,18 +28,22 @@
         private final Context context;
         private final ArrayList<Ship> values;
         private Ship aShip;
-
-
+        private HashMap<Integer,Integer> map;
 
         public AdapterViewFleet(final Context context, ArrayList<Ship> values) {
             super(context, R.layout.adapter_list_fleet, values);
             this.context = context;
             this.values = values;
-
+            this.map = new HashMap<Integer,Integer>();
         }
+
 
         public int getCount() {
             return values.size();
+        }
+
+        public HashMap getHashMap(){
+            return this.map;
         }
 
         public Ship getItem(int position) {
@@ -45,7 +51,7 @@
         }
 
         @Override
-        public View getView(int position, final View convertView, ViewGroup parent) {
+        public View getView(final int position, final View convertView, ViewGroup parent) {
 
             final LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -62,20 +68,32 @@
 
 
             aShip = values.get(position);
+
+
             aShip.getUrlImage();
-            ship_amount.setText(String.valueOf(aShip.getAmount()));
-            if(aShip.getAmount() == 0){
-                seekBar.setVisibility(View.GONE);
-            }
-            ship_name.setText(aShip.getName());
+
             seekBar.setMax(aShip.getAmount());
-            seekBar.setProgress(aShip.getAmount());
+            if(map.get(aShip.getShipId()) != null){
+                ship_amount.setText(String.valueOf(map.get(aShip.getShipId())));
+                seekBar.setProgress(map.get(aShip.getShipId()));
+            }else{
+                if(aShip.getAmount() == 0){
+                    seekBar.setVisibility(View.GONE);
+                }else{
+                    ship_amount.setText(String.valueOf(aShip.getAmount()));
+                    seekBar.setProgress(aShip.getAmount());
+                }
+                map.put(aShip.getShipId(),aShip.getAmount());
+            }
+
+            ship_name.setText(aShip.getName());
 
 
                 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        ship_amount.setText(String.valueOf(seekBar.getProgress()));
+                        map.put(values.get(position).getShipId(), seekBar.getProgress());
+                        ship_amount.setText(String.valueOf(map.get(values.get(position).getShipId())));
                     }
 
                     @Override

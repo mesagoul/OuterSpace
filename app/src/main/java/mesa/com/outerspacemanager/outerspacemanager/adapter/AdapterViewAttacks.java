@@ -3,8 +3,6 @@
     import android.content.Context;
     import android.os.Handler;
     import android.support.v7.widget.RecyclerView;
-    import android.text.format.DateUtils;
-    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -17,9 +15,9 @@
     import java.util.List;
 
     import mesa.com.outerspacemanager.outerspacemanager.R;
-    import mesa.com.outerspacemanager.outerspacemanager.db.AttackSataSource;
+    import mesa.com.outerspacemanager.outerspacemanager.db.AttackDataSource;
     import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
-    import mesa.com.outerspacemanager.outerspacemanager.OnAttackClickedListener;
+    import mesa.com.outerspacemanager.outerspacemanager.OnGeneralClickedListener;
 
     /**
      * Created by Lucas on 20/03/2017.
@@ -30,16 +28,12 @@
     private final Context context;
     private final List<Attack> listattacks;
 
-
-
-        private OnAttackClickedListener lister;
+        private OnGeneralClickedListener listner;
 
     public AdapterViewAttacks(Context context, List<Attack> attacks) {
             this.listattacks = attacks;
             this.context = context;
             }
-
-
 
         @Override
         public AdapterViewAttacks.AttaksViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -47,10 +41,6 @@
                 View rowView = inflater.inflate(R.layout.adapter_list_attacks, parent, false);
                 AdapterViewAttacks.AttaksViewHolder viewHolder = new AdapterViewAttacks.AttaksViewHolder(rowView);
                 viewHolder.handler = new Handler();
-
-
-
-
                 return viewHolder;
                 }
 
@@ -70,7 +60,7 @@
             if(System.currentTimeMillis() > anAttack.getAttack_time()){
                 holder.date.setText("Attaque terminée");
                 holder.userAttacked.setText(anAttack.getUsername());
-                AttackSataSource db = new AttackSataSource(context);
+                AttackDataSource db = new AttackDataSource(context);
                 db.open();
                 db.deleteAttack(anAttack);
                 db.close();
@@ -87,6 +77,7 @@
                         Date date = new Date(anAttack.getAttack_time() - System.currentTimeMillis());
                         String dateFormatted = formatter.format(date);
                         holder.date.setText(dateFormatted);
+                        holder.progress.setProgress(anAttack.getProgress());
 
                         holder.handler.postDelayed(this, 1000);
 
@@ -100,14 +91,14 @@
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        lister.onAttackClicked(anAttack);
+                        listner.onAttackClicked(anAttack);
                     }
                 });
             }
         }
 
-        public void setListner(OnAttackClickedListener lister) {
-            this.lister = lister;
+        public void setListner(OnGeneralClickedListener listner) {
+            this.listner = listner;
         }
 
 

@@ -27,6 +27,10 @@ public class Ship implements Serializable {
         this.shipId = id;
         this.amount = amount;
     }
+    public Ship(int id, String name){
+        this.shipId = id;
+        this.name = name;
+    }
 
     public String getUrlImage(){
         this.urlImages = new ArrayList<String>();
@@ -89,4 +93,6 @@ public class Ship implements Serializable {
     public int getAmount() {
         return this.amount;
     }
+
+
 }

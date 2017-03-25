@@ -10,14 +10,24 @@ import android.os.Environment;
  */
 
 public class OuterSpaceDB extends SQLiteOpenHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "OuterSpace.db";
     public static final String ATTAQUE_TABLE_NAME = "ATTACK";
+    public static final String SHIP_TABLE_NAME = "SHIP";
     public static final String KEY_ID = "ID";
     public static final String KEY_SHIPS = "SHIPS";
     public static final String KEY_USERNAME = "USERNAME";
     public static final String KEY_ATTACKTIME = "ATTACK_TIME";
     public static final String KEY_BEGINATTACKTIME = "BEGIN_ATTACK_TIME";
+
+    public static final String KEY_SHIP_ID = "SHIP_ID";
+    public static final String KEY_SHIP_LIBELLE = "SHIP_LIBELLE";
+
+    private static final String SHIP_TABLE_CREATE =
+            "CREATE TABLE " + SHIP_TABLE_NAME +
+                    " (" + KEY_SHIP_ID + " INTEGER, " +
+                    KEY_SHIP_LIBELLE + " TEXT " +
+                    ");";
     private static final String ATTACK_TABLE_CREATE =
             "CREATE TABLE " + ATTAQUE_TABLE_NAME +
                     " (" + KEY_ID + " TEXT, " +
@@ -32,12 +42,15 @@ public class OuterSpaceDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-            db.execSQL(ATTACK_TABLE_CREATE);
+
+        db.execSQL(ATTACK_TABLE_CREATE);
+        db.execSQL(SHIP_TABLE_CREATE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + ATTACK_TABLE_CREATE);
+        db.execSQL("DROP TABLE IF EXISTS " + ATTAQUE_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + SHIP_TABLE_NAME);
         onCreate(db);
     }
 }

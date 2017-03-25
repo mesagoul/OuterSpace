@@ -8,22 +8,18 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.activity.ChantierActivity;
-import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
 import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewChantier;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ship;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
-import mesa.com.outerspacemanager.outerspacemanager.utils.LoaderProgressBar;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,24 +31,30 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class FragmentShipList extends Fragment {
-    private LoaderProgressBar progress;
+
+    // UI ELEMENTS
+    private ProgressBar progressBar;
     private ListView list_ships;
-    private String token;
-    private Retrofit retrofit;
-    private Service service;
+    private SwipeRefreshLayout refreshLayout;
+
+    // VARIABLES
     private ArrayList<Ship> myShips;
     private Double currentUserMinerals;
     private Double currentUserGas;
+
+    // NETWORK
+    private String token;
+    private Retrofit retrofit;
+    private Service service;
     private SharedPreferences settings;
-    private SwipeRefreshLayout refreshLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_ship_list,container);
-        progress = new LoaderProgressBar(getContext());
         settings = getActivity().getSharedPreferences("token", 0);
         list_ships = (ListView) v.findViewById(R.id.list_items);
+        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_items_layout);
         retrofit = new Retrofit.Builder()
                 .baseUrl("https://outer-space-manager.herokuapp.com/")
@@ -75,7 +77,7 @@ public class FragmentShipList extends Fragment {
 
         list_ships.setOnItemClickListener((ChantierActivity)getActivity());
 
-        progress.show();
+        progressBar.setVisibility(View.VISIBLE);
         refreshListShips();
     }
 
@@ -87,7 +89,7 @@ public class FragmentShipList extends Fragment {
             @Override
             public void onResponse(Call<Ships> call, Response<Ships> response) {
                 refreshLayout.setRefreshing(false);
-                progress.dismiss();
+                progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     myShips = response.body().getShips();
                     currentUserGas = response.body().getCurrentUserGas();

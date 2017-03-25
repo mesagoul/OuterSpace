@@ -20,7 +20,7 @@ import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
  * Created by Lucas on 20/03/2017.
  */
 
-public class AttackSataSource {
+public class AttackDataSource {
 
     // Database fields
     private Gson gson;
@@ -33,7 +33,7 @@ public class AttackSataSource {
             OuterSpaceDB.KEY_ATTACKTIME,
             OuterSpaceDB.KEY_BEGINATTACKTIME
     };
-    public AttackSataSource(Context context) {
+    public AttackDataSource(Context context) {
         dbHelper = new OuterSpaceDB(context);
     }
     public void open() throws SQLException {
