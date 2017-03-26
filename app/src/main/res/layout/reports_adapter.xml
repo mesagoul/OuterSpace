@@ -54,7 +54,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Gas won" />
+                    android:text="Gas gagné" />
 
                 <TextView
                     android:id="@+id/rapport_gasWon"
@@ -77,7 +77,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Mineral won" />
+                    android:text="Mineral gagné" />
 
                 <TextView
                     android:id="@+id/rapport_MieralWon"

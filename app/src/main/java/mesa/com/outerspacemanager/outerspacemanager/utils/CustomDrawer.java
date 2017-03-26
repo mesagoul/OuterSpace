@@ -116,7 +116,7 @@ public class CustomDrawer {
                         if(Integer.parseInt(String.valueOf(drawerItem.getIdentifier())) != 6){
                             Class classIntent = getActivityFromIdentifier(Integer.parseInt(String.valueOf(drawerItem.getIdentifier())));
                             Intent newIntent = new Intent(activity.getApplicationContext(),classIntent);
-                            activity.startActivity(newIntent);
+                            activity.startActivityForResult(newIntent,0);
 
                         }else{
                             SharedPreferences settings = activity.getSharedPreferences("token", 0);

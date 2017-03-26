@@ -113,6 +113,8 @@ public class Fragment_ship_detail extends Fragment {
         this.spatioportLevelNeeded.setText(String.valueOf(ship.getSpatioportLevelNeeded()));
         this.timeToBuild.setText(String.valueOf(ship.getTimeToBuild()));
     }
+
+    // Set seekBar max with mineral/gas of user
     public void updateSeekBarMax(Double minerals, Double gas){
         Double maxGas = gas/ship.getGasCost();
         Double maxMineral = minerals/ship.getMineralCost();
@@ -132,6 +134,7 @@ public class Fragment_ship_detail extends Fragment {
             @Override
             public void onResponse(Call<Ships> call, Response<Ships> response) {
                 Toast.makeText(getContext(), String.format("Vos vaisseaux sont en construction"), Toast.LENGTH_SHORT).show();
+                getActivity().setResult(1);
                 getActivity().finish();
 
             }

@@ -101,6 +101,7 @@ public class SignUpActivity extends Activity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 progressBar.setVisibility(View.GONE);
+                layout_connexion.setVisibility(View.VISIBLE);
 
                 if (response.isSuccessful()) {
                     SharedPreferences settings = getSharedPreferences("token", 0);
@@ -112,7 +113,6 @@ public class SignUpActivity extends Activity {
                     Intent toMainActivity = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(toMainActivity);
                 } else {
-                    layout_connexion.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), String.format("Erreur lors la connexion"), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -133,6 +133,7 @@ public class SignUpActivity extends Activity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 progressBar.setVisibility(View.GONE);
+                layout_connexion.setVisibility(View.VISIBLE);
                 if(response.isSuccessful()){
                     SharedPreferences settings = getSharedPreferences("token", 0);
                     SharedPreferences.Editor editor = settings.edit();
@@ -143,7 +144,6 @@ public class SignUpActivity extends Activity {
                     Intent IntentMainActivity = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(IntentMainActivity);
                 }else{
-                    layout_connexion.setVisibility(View.VISIBLE);
                     Toast.makeText(getApplicationContext(), String.format("Erreur lors de l'authentification"), Toast.LENGTH_SHORT).show();
                 }
 

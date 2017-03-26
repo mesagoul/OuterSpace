@@ -34,11 +34,11 @@ public class Ship implements Serializable {
 
     public String getUrlImage(){
         this.urlImages = new ArrayList<String>();
-        this.urlImages.add("https://s-media-cache-ak0.pinimg.com/originals/e0/3e/70/e03e7026394c97aab0a52a5a4283d24b.jpg");
-        this.urlImages.add("http://www.vive-internet-gratuit.com/images/dessins/Vaisseau-spatial_49.jpg");
-        this.urlImages.add("http://poopss.p.o.pic.centerblog.net/o/e04b1581.jpg");
-        this.urlImages.add("http://www.stargate-fusion.com/images/news/divers/x301-schema-grand.jpg");
-        this.urlImages.add("https://www.quizz.biz/uploads/quizz/140918/2_D9Z1T.jpg");
+        this.urlImages.add("https://cdn.pixabay.com/photo/2014/09/11/12/45/science-fiction-441708_960_720.jpg");
+        this.urlImages.add("https://cdn.pixabay.com/photo/2015/08/28/16/20/eagle-912122_960_720.jpg");
+        this.urlImages.add("https://cdn.pixabay.com/photo/2017/02/11/10/33/spaceship-2057420_960_720.jpg");
+        this.urlImages.add("https://cdn.pixabay.com/photo/2015/12/11/22/25/star-wars-1088872_960_720.jpg");
+        this.urlImages.add("https://cdn.pixabay.com/photo/2015/03/26/18/36/spacex-693229_960_720.jpg");
         return this.urlImages.get(this.shipId);
     }
 

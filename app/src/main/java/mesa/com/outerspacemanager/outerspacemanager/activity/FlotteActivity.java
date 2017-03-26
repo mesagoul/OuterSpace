@@ -168,6 +168,8 @@ public class FlotteActivity extends AppCompatActivity {
                     db.createAttack(attack);
                     db.close();
                     Toast.makeText(getApplicationContext(), String.format("Votre flotte à été envoyée au combat"), Toast.LENGTH_SHORT).show();
+                    setResult(1);
+                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(), String.format("Erreur lors de la récupération des vaisseaux"), Toast.LENGTH_SHORT).show();
                 }
@@ -197,7 +199,6 @@ public class FlotteActivity extends AppCompatActivity {
                 }else{
                     attaqueUser();
                 }
-                finish();
 
             }
         }

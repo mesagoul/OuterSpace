@@ -42,7 +42,7 @@ public class ChantierActivity extends AppCompatActivity implements AdapterView.O
             i.putExtra("ship", fragment_itemList.getShips().get(position));
             i.putExtra("currentUserMinreals", fragment_itemList.getCurrentUserMinerals());
             i.putExtra("currentUserGas", fragment_itemList.getCurrentUserGas());
-            startActivity(i);
+            startActivityForResult(i,0);
         } else {
             fragment_ship_detail.setShip(fragment_itemList.getShips().get(position));
             fragment_ship_detail.updateSeekBarMax(fragment_itemList.getCurrentUserMinerals(), fragment_itemList.getCurrentUserGas());
@@ -54,6 +54,15 @@ public class ChantierActivity extends AppCompatActivity implements AdapterView.O
         if (fragment_ship_detail != null && fragment_ship_detail.isInLayout()) {
             fragment_ship_detail.setShip(myShips.get(0));
             fragment_ship_detail.updateSeekBarMax(minerals,gas);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode != 0){
+            setResult(2);
+            finish();
         }
     }
 

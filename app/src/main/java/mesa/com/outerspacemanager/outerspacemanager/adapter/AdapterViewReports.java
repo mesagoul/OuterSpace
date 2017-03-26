@@ -68,8 +68,8 @@ public class AdapterViewReports extends RecyclerView.Adapter<AdapterViewReports.
 
                     holder.overlay.setBackgroundResource(R.color.colorGreen);
 
-                    holder.gas_won.setText(String.valueOf(aReport.getGasWon()));
-                    holder.mineral_won.setText(String.valueOf(aReport.getMineralsWon()));
+                    holder.gas_won.setText(String.valueOf(aReport.getGasWon().intValue()));
+                    holder.mineral_won.setText(String.valueOf(aReport.getMineralsWon().intValue()));
                 }
             }else{
                 if(aReport.getDefenderFleetAfterBattle().getSurvivingShips() == 0){
@@ -79,8 +79,8 @@ public class AdapterViewReports extends RecyclerView.Adapter<AdapterViewReports.
                     holder.win.setVisibility(View.GONE);
                     holder.defended_won.setVisibility(View.GONE);
 
-                    holder.defended_gas_lose.setText(String.valueOf(aReport.getGasWon()));
-                    holder.defended_mineral_lose.setText(String.valueOf(aReport.getMineralsWon()));
+                    holder.defended_gas_lose.setText(String.valueOf(aReport.getGasWon().intValue()));
+                    holder.defended_mineral_lose.setText(String.valueOf(aReport.getMineralsWon().intValue()));
 
                     holder.overlay.setBackgroundResource(R.color.colorRed);
                 }else{

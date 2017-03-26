@@ -143,6 +143,8 @@ public class BuildingActivity extends AppCompatActivity{
 
                                 if(response.isSuccessful()){
                                     Toast.makeText(getApplicationContext(), String.format("En construction"), Toast.LENGTH_SHORT).show();
+                                    setResult(2);
+                                    finish();
                                 }else{
                                     //responses = gson.fromJson(response.errorBody().toString(), Responses.class);
                                     Toast.makeText(getApplicationContext(), String.format("Votre batiment est déja en construction"), Toast.LENGTH_SHORT).show();

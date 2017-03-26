@@ -2,6 +2,7 @@
 
     import android.content.Context;
     import android.os.Handler;
+    import android.support.v4.app.Fragment;
     import android.support.v7.widget.RecyclerView;
     import android.view.LayoutInflater;
     import android.view.View;
@@ -16,6 +17,8 @@
 
     import mesa.com.outerspacemanager.outerspacemanager.R;
     import mesa.com.outerspacemanager.outerspacemanager.db.AttackDataSource;
+    import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksDetail;
+    import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksList;
     import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
     import mesa.com.outerspacemanager.outerspacemanager.OnGeneralClickedListener;
 
@@ -27,12 +30,14 @@
     public class AdapterViewAttacks extends RecyclerView.Adapter<AdapterViewAttacks.AttaksViewHolder>{
     private final Context context;
     private final List<Attack> listattacks;
+        private  FragmentCurrentAttacksList fragment;
 
         private OnGeneralClickedListener listner;
 
-    public AdapterViewAttacks(Context context, List<Attack> attacks) {
+    public AdapterViewAttacks(Context context, List<Attack> attacks, FragmentCurrentAttacksList fragment) {
             this.listattacks = attacks;
             this.context = context;
+        this.fragment = fragment;
             }
 
         @Override
@@ -60,10 +65,7 @@
             if(System.currentTimeMillis() > anAttack.getAttack_time()){
                 holder.date.setText("Attaque terminée");
                 holder.userAttacked.setText(anAttack.getUsername());
-                AttackDataSource db = new AttackDataSource(context);
-                db.open();
-                db.deleteAttack(anAttack);
-                db.close();
+               deleteAttack(anAttack);
             } else {
 
                 if (holder.runnable != null){
@@ -74,12 +76,18 @@
                     @Override
                     public void run() {
                         DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                        if(anAttack.getAttack_time() - System.currentTimeMillis() < 0){
+                            // reload this recycleView with datas UPDATED
+                            holder.stopHandler = true;
+                            fragment.updateDatas();
+                        }
                         Date date = new Date(anAttack.getAttack_time() - System.currentTimeMillis());
                         String dateFormatted = formatter.format(date);
                         holder.date.setText(dateFormatted);
                         holder.progress.setProgress(anAttack.getProgress());
-
-                        holder.handler.postDelayed(this, 1000);
+                        if(!holder.stopHandler){
+                            holder.handler.postDelayed(this, 1000);
+                        }
 
                     }
                 };
@@ -95,6 +103,12 @@
                     }
                 });
             }
+        }
+        public void deleteAttack(Attack anAttack){
+            AttackDataSource db = new AttackDataSource(context);
+            db.open();
+            db.deleteAttack(anAttack);
+            db.close();
         }
 
         public void setListner(OnGeneralClickedListener listner) {
@@ -114,6 +128,7 @@
         private ProgressBar progress;
         private Handler handler;
         private Runnable runnable;
+        private boolean stopHandler;
 
         public AttaksViewHolder(View itemView)
         {
@@ -121,6 +136,7 @@
             userAttacked = (TextView) itemView.findViewById(R.id.attack_username);
             date = (TextView) itemView.findViewById(R.id.attack_date);
             progress = (ProgressBar) itemView.findViewById(R.id.attack_progress);
+            stopHandler = false;
         }
     }
     }

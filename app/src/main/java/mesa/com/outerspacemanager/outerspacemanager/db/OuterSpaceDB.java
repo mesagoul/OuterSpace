@@ -20,6 +20,11 @@ public class OuterSpaceDB extends SQLiteOpenHelper {
     public static final String KEY_ATTACKTIME = "ATTACK_TIME";
     public static final String KEY_BEGINATTACKTIME = "BEGIN_ATTACK_TIME";
 
+
+    public static final String BUILDING_TABLE_NAME = "ATTACK";
+    public static final String KEY_BUILDING_NAME_ID = "BEGIN_ATTACK_TIME";
+    public static final String KEY_BUILDING_IS_CONSTRUCTION = "BEGIN_ATTACK_TIME";
+
     public static final String KEY_SHIP_ID = "SHIP_ID";
     public static final String KEY_SHIP_LIBELLE = "SHIP_LIBELLE";
 

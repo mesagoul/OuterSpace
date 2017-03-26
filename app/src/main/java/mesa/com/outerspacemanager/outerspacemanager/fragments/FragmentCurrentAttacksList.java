@@ -55,9 +55,14 @@ public class FragmentCurrentAttacksList extends Fragment {
     public void getAttacks(){
         db = new AttackDataSource(getContext());
         db.open();
-        AdapterViewAttacks attackAdapter = new AdapterViewAttacks(getContext(), db.getAllAttacks());
+        AdapterViewAttacks attackAdapter = new AdapterViewAttacks(getContext(), db.getAllAttacks(), this);
         db.close();
         attackAdapter.setListner((MainActivity)getActivity());
         rvCurrentAttacks.setAdapter(attackAdapter);
+    }
+
+    // called by Adapter to update data when an attack is ended
+    public void updateDatas() {
+        ((MainActivity)getActivity()).refreshPagerView();
     }
 }

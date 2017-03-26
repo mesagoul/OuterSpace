@@ -2,23 +2,26 @@ package mesa.com.outerspacemanager.outerspacemanager.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
 import mesa.com.outerspacemanager.outerspacemanager.OnGeneralClickedListener;
+import mesa.com.outerspacemanager.outerspacemanager.Permissions.InternalStorage;
 import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.animations.ZoomOutPageTransformer;
 import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksDetail;
 import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksList;
 import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportDetail;
@@ -40,24 +43,30 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends FragmentActivity implements OnGeneralClickedListener {
 
+    // CONSTANTS
+    private static final int RESULT_CODE_GENERAL = 0;
+    private static final int RESULT_CODE_ACTIVITY_AFTER_ATTACK = 1;
+    private static final int RESULT_CODE_ACTIVITY_RELOAD_USER = 2;
+
+    // VARIABLES
+    private Double mineralGenerated;
+    private Double gasGenerated;
+    private CustomDrawer drawer;
+    private ArrayList<Fragment> listFragments;
     private Handler handler;
     private Runnable runnable;
+    boolean isHandlerRun;
+    private InternalStorage permission_storage;
+    // NETWORK
     private Retrofit retrofit;
     private Service service;
     private String token;
     private Gson gson;
-    boolean isHandlerRun;
-
-    private Double mineralGenerated;
-    private Double gasGenerated;
-    private CustomDrawer drawer;
-
-    private ArrayList<Fragment> listFragments;
-
 
     // VIEW PAGER
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+    private TabLayout tabLayout;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,12 +79,9 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
 
         gson = new Gson();
 
+        permission_storage = new InternalStorage(this);
+        permission_storage.askForPermission();
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.main_pager);
-        mPager.setPageTransformer(true,new ZoomOutPageTransformer());
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), listFragments);
-        mPager.setAdapter(mPagerAdapter);
 
         // Instantiate Drawer
         drawer = new CustomDrawer(this);
@@ -106,11 +112,45 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
                 .build();
 
         service = retrofit.create(Service.class);
-
         refreshUser();
 
+    }
+
+    public void initVariablesRequiredDataBase(){
+        mPager = (ViewPager) findViewById(R.id.main_pager);
+        mPager.setPageTransformer(true,new ZoomOutPageTransformer());
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), listFragments);
+        mPager.setAdapter(mPagerAdapter);
 
 
+        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(mPager);
+    }
+
+    public void refreshPagerView(){
+        mPager.setAdapter(new ScreenSlidePagerAdapter(getSupportFragmentManager(), listFragments));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 2: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Instantiate a ViewPager and a PagerAdapter.
+                   this.initVariablesRequiredDataBase();
+
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    permission_storage.askForPermission();
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 
     @Override
@@ -124,7 +164,14 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        refreshUser();
+        if(resultCode != RESULT_CODE_GENERAL){
+            // if fleet response after attack an user
+            refreshUser();
+            if(resultCode == RESULT_CODE_ACTIVITY_AFTER_ATTACK){
+                // reload PagerView
+                refreshPagerView();
+            }
+        }
     }
 
     public void updateRessources(){
@@ -193,8 +240,9 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
      */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
         private ArrayList<Fragment> listFragments;
+        private String tabTitles[] = new String[] { "Attaques en cours", "Rapports" };
 
         public ScreenSlidePagerAdapter(FragmentManager fm, ArrayList<Fragment> listFragments) {
             super(fm);
@@ -209,6 +257,11 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
         @Override
         public int getCount() {
             return listFragments.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return tabTitles[position];
         }
     }
 }
