@@ -1,6 +1,5 @@
-package mesa.com.outerspacemanager.outerspacemanager.fragments;
+package mesa.com.outerspacemanager.outerspacemanager.fragments.currentAttacks;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,19 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.ToggleButton;
 
-import java.util.ArrayList;
-
-import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
+import mesa.com.outerspacemanager.outerspacemanager.interfaces.OnAttackListner;
+import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewAttacks;
 import mesa.com.outerspacemanager.outerspacemanager.db.AttackDataSource;
-import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
-import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
-import mesa.com.outerspacemanager.outerspacemanager.network.Service;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Lucas on 25/03/2017.
@@ -33,6 +25,7 @@ public class FragmentCurrentAttacksList extends Fragment {
     private ProgressBar progressBar;
     private RecyclerView rvCurrentAttacks;
     private AttackDataSource db;
+    private OnAttackListner listener;
 
     @Nullable
     @Override
@@ -57,12 +50,16 @@ public class FragmentCurrentAttacksList extends Fragment {
         db.open();
         AdapterViewAttacks attackAdapter = new AdapterViewAttacks(getContext(), db.getAllAttacks(), this);
         db.close();
-        attackAdapter.setListner((MainActivity)getActivity());
+        attackAdapter.setListner(listener);
         rvCurrentAttacks.setAdapter(attackAdapter);
     }
 
     // called by Adapter to update data when an attack is ended
     public void updateDatas() {
-        ((MainActivity)getActivity()).refreshPagerView();
+       listener.onAttackTimeEnded();
+    }
+
+    public void setListener(OnAttackListner listener) {
+        this.listener = listener;
     }
 }
