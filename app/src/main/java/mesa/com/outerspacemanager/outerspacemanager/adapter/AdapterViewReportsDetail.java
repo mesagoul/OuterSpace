@@ -24,7 +24,7 @@ import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
 
 public class AdapterViewReportsDetail extends RecyclerView.Adapter<AdapterViewReportsDetail.ReportDetailViewHolder> {
     private final Context context;
-    private final List<Ship> ships;
+    private final ArrayList<Ship> ships;
     private final FleetAfterBattle fleetAfterBattle;
 
     public AdapterViewReportsDetail(Context context, FleetAfterBattle fleet) {
@@ -59,7 +59,11 @@ public class AdapterViewReportsDetail extends RecyclerView.Adapter<AdapterViewRe
 
     @Override
     public int getItemCount() {
-        return ships.size();
+        if(ships == null){
+            return 0;
+        }else{
+            return ships.size();
+        }
     }
 
     public class ReportDetailViewHolder extends RecyclerView.ViewHolder {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_generale"
+        android:title="Vue Générale"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_buildings"
+        android:title="Bâtiments"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_fleet"
+        android:title="Flotte"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_recherches"
+        android:title="Recherches"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_chantier"
+        android:title="Chantier Spatial"
+        app:showAsAction="never"/>
+    <item android:id="@+id/menu_galaxie"
+        android:title="Galaxie"
+        app:showAsAction="never"/>
+
+</menu>

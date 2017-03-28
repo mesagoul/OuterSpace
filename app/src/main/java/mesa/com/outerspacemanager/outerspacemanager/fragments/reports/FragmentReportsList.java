@@ -69,11 +69,11 @@ public class FragmentReportsList extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         service = retrofit.create(Service.class);
-        getRapports();
+        getRapports(false);
     }
 
-    public void getRapports(){
-        if(listReports.size() == 0){
+    public void getRapports(boolean isRapportLoaded){
+        if(!isRapportLoaded){
             loadReports();
         }else{
             progressBar.setVisibility(View.GONE);
@@ -89,7 +89,7 @@ public class FragmentReportsList extends Fragment {
             @Override
             public void onResponse(Call<Reports> call, Response<Reports> response) {
                 listReports = response.body().getReports();
-                getRapports();
+                getRapports(true);
             }
 
             @Override

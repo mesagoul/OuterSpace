@@ -138,12 +138,10 @@ public class FragmentBuilding extends Fragment {
 
                                 if(response.isSuccessful()){
                                     Toast.makeText(getActivity().getApplicationContext(), String.format("En construction"), Toast.LENGTH_SHORT).show();
-                                    ((MainActivity)getActivity()).loadNewFragment(new FragmentPagerView(), true);
+                                    //((MainActivity)getActivity()).loadNewFragment(new FragmentPagerView(), true);
                                 }else{
-                                    //responses = gson.fromJson(response.errorBody().toString(), Responses.class);
                                     Toast.makeText(getActivity().getApplicationContext(), String.format("Votre batiment est déja en construction"), Toast.LENGTH_SHORT).show();
                                 }
-                                //response.errorBody().string()
 
                             }
 

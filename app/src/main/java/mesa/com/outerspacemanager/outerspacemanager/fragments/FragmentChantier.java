@@ -70,7 +70,7 @@ public class FragmentChantier extends Fragment implements ChantierListener {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode  == 1){
             ((MainActivity)getActivity()).refreshUser();
-            ((MainActivity)getActivity()).loadNewFragment(new FragmentPagerView() , false);
+           // ((MainActivity)getActivity()).loadNewFragment(new FragmentPagerView() , false);
         }
     }
 }

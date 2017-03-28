@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "909812491909",
+    "firebase_url": "https://outer-space-manager-prod.firebaseio.com",
+    "project_id": "outer-space-manager-prod",
+    "storage_bucket": "outer-space-manager-prod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:909812491909:android:6fb6400f930d1671",
+        "android_client_info": {
+          "package_name": "mesa.com.outerspacemanager.outerspacemanager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "909812491909-vbscrd7uhkna2o09nn817uc2r2bo75hk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBx1ovTlRO1M3BiJ48nlFg4w4k4R66-IfU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
