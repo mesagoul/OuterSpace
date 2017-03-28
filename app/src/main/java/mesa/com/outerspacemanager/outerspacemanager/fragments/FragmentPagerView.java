@@ -1,7 +1,6 @@
 package mesa.com.outerspacemanager.outerspacemanager.fragments;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -18,10 +17,8 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
 import mesa.com.outerspacemanager.outerspacemanager.interfaces.OnAttackListner;
 import mesa.com.outerspacemanager.outerspacemanager.interfaces.OnRapportListener;
-import mesa.com.outerspacemanager.outerspacemanager.Permissions.InternalStorage;
 import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.activity.AttackDetailActivity;
 import mesa.com.outerspacemanager.outerspacemanager.activity.ReportDetailActivity;

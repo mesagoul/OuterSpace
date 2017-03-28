@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,7 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.widget.FrameLayout;
 
-import mesa.com.outerspacemanager.outerspacemanager.Permissions.InternalStorage;
+import mesa.com.outerspacemanager.outerspacemanager.permissions.InternalStorage;
 import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentPagerView;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
