@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.Permissions;
+package mesa.com.outerspacemanager.outerspacemanager.permissions;
 
 import android.Manifest;
 import android.app.Activity;
