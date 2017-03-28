@@ -1,8 +1,9 @@
 package mesa.com.outerspacemanager.outerspacemanager.utils;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.mikepenz.materialdrawer.AccountHeader;
@@ -16,12 +17,12 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.activity.BuildingActivity;
-import mesa.com.outerspacemanager.outerspacemanager.activity.ChantierActivity;
-import mesa.com.outerspacemanager.outerspacemanager.activity.FlotteActivity;
-import mesa.com.outerspacemanager.outerspacemanager.activity.GalaxieActivity;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentBuilding;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentFlotte;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentSearche;
 import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
-import mesa.com.outerspacemanager.outerspacemanager.activity.SearcheActivity;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentChantier;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentGalaxy;
 
 /**
  * Created by Lucas on 22/03/2017.
@@ -46,9 +47,12 @@ public class CustomDrawer {
     private ProfileDrawerItem profile;
     private AccountHeader account;
 
+    private Toolbar toolbar;
 
-    public CustomDrawer(Activity activity){
+
+    public CustomDrawer(Activity activity, Toolbar toolbar){
         this.activity = activity;
+        this.toolbar = toolbar;
         this.buildings_item = new PrimaryDrawerItem().withIdentifier(1).withName("Bâtiments").withIcon(R.drawable.ic_rocket);
         this.fleet_item = new PrimaryDrawerItem().withIdentifier(2).withName("Flotte").withIcon(R.drawable.ic_fleet);
         this.resherches_item = new PrimaryDrawerItem().withIdentifier(3).withName("Recherches").withIcon(R.drawable.ic_resherches);
@@ -58,22 +62,23 @@ public class CustomDrawer {
         this.gas_item = new PrimaryDrawerItem().withIdentifier(7).withName("Gas : ");
         this.mineral_item = new PrimaryDrawerItem().withIdentifier(8).withName("Mineral : ");
         this.profile = new ProfileDrawerItem();
+
     }
 
-    public Class getActivityFromIdentifier(int id){
+    public Fragment getFragmentFromIdentifier(int id){
         switch (id){
             case 1 :
-                return BuildingActivity.class;
+                return new FragmentBuilding();
             case 2 :
-                return FlotteActivity.class;
+                 return new FragmentFlotte();
             case 3 :
-                return SearcheActivity.class;
+                 return new FragmentSearche();
             case 4 :
-                return ChantierActivity.class;
+                return new FragmentChantier();
             case 5 :
-                 return GalaxieActivity.class;
+                  return new FragmentGalaxy();
         }
-        return MainActivity.class;
+         return new FragmentGalaxy();
 
     }
     public void load(){
@@ -97,6 +102,7 @@ public class CustomDrawer {
 
         result = new DrawerBuilder()
                 .withActivity(this.activity)
+                .withToolbar(this.toolbar)
                 .withAccountHeader(this.account)
                 .withActionBarDrawerToggle(true)
                 .addDrawerItems(
@@ -114,9 +120,8 @@ public class CustomDrawer {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if(Integer.parseInt(String.valueOf(drawerItem.getIdentifier())) != 6){
-                            Class classIntent = getActivityFromIdentifier(Integer.parseInt(String.valueOf(drawerItem.getIdentifier())));
-                            Intent newIntent = new Intent(activity.getApplicationContext(),classIntent);
-                            activity.startActivityForResult(newIntent,0);
+                            Fragment newFragment = getFragmentFromIdentifier(Integer.parseInt(String.valueOf(drawerItem.getIdentifier())));
+                            ((MainActivity)activity).loadNewFragment(newFragment);
 
                         }else{
                             SharedPreferences settings = activity.getSharedPreferences("token", 0);
@@ -155,7 +160,4 @@ public class CustomDrawer {
         return this.result;
     }
 
-    public void showBurger() {
-        result.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
-    }
 }

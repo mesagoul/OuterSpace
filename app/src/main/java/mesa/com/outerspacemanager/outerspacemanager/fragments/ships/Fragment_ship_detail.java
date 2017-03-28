@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.fragments;
+package mesa.com.outerspacemanager.outerspacemanager.fragments.ships;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

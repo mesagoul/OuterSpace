@@ -2,7 +2,6 @@
 
     import android.content.Context;
     import android.os.Handler;
-    import android.support.v4.app.Fragment;
     import android.support.v7.widget.RecyclerView;
     import android.view.LayoutInflater;
     import android.view.View;
@@ -15,12 +14,11 @@
     import java.util.Date;
     import java.util.List;
 
+    import mesa.com.outerspacemanager.outerspacemanager.interfaces.OnAttackListner;
     import mesa.com.outerspacemanager.outerspacemanager.R;
     import mesa.com.outerspacemanager.outerspacemanager.db.AttackDataSource;
-    import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksDetail;
-    import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksList;
+    import mesa.com.outerspacemanager.outerspacemanager.fragments.currentAttacks.FragmentCurrentAttacksList;
     import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
-    import mesa.com.outerspacemanager.outerspacemanager.OnGeneralClickedListener;
 
     /**
      * Created by Lucas on 20/03/2017.
@@ -32,7 +30,7 @@
     private final List<Attack> listattacks;
         private  FragmentCurrentAttacksList fragment;
 
-        private OnGeneralClickedListener listner;
+        private OnAttackListner listner;
 
     public AdapterViewAttacks(Context context, List<Attack> attacks, FragmentCurrentAttacksList fragment) {
             this.listattacks = attacks;
@@ -111,7 +109,7 @@
             db.close();
         }
 
-        public void setListner(OnGeneralClickedListener listner) {
+        public void setListner(OnAttackListner listner) {
             this.listner = listner;
         }
 

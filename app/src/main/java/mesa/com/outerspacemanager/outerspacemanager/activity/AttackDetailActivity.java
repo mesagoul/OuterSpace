@@ -7,15 +7,14 @@ import android.view.MenuItem;
 import com.google.gson.Gson;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksDetail;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.currentAttacks.FragmentCurrentAttacksDetail;
 import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
-import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
 
 /**
  * Created by Lucas on 20/03/2017.
  */
 
-public class AttackDetailActivity extends AppCompatActivity {
+public class AttackDetailActivity extends AppCompatActivity{
     private Gson gson;
     @Override
     protected void onCreate( Bundle savedInstanceState) {

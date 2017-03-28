@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.fragments;
+package mesa.com.outerspacemanager.outerspacemanager.fragments.currentAttacks;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
 import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewAttacksDetail;
 import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
 

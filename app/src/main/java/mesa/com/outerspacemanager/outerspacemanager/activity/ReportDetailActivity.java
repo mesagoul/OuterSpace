@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import com.google.gson.Gson;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportDetail;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.reports.FragmentReportsDetail;
 import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
 
 /**
@@ -30,7 +30,7 @@ public class ReportDetailActivity extends AppCompatActivity {
 
         Report aReport = gson.fromJson(getIntent().getStringExtra("report"), Report.class);
 
-        FragmentRapportDetail fragment_general_detail = (FragmentRapportDetail)getSupportFragmentManager().findFragmentById(R.id.fragment_report_detail);
+        FragmentReportsDetail fragment_general_detail = (FragmentReportsDetail)getSupportFragmentManager().findFragmentById(R.id.fragment_report_detail);
         if ( aReport != null){
             fragment_general_detail.setReport(aReport);
         }

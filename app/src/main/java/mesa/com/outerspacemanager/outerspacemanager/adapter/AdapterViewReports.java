@@ -2,13 +2,11 @@ package mesa.com.outerspacemanager.outerspacemanager.adapter;
 
 
         import android.content.Context;
-        import android.graphics.drawable.Drawable;
         import android.support.v7.widget.RecyclerView;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.LinearLayout;
-        import android.widget.RelativeLayout;
         import android.widget.TextView;
 
         import java.text.DateFormat;
@@ -16,7 +14,7 @@ package mesa.com.outerspacemanager.outerspacemanager.adapter;
         import java.util.ArrayList;
         import java.util.Date;
 
-        import mesa.com.outerspacemanager.outerspacemanager.OnGeneralClickedListener;
+        import mesa.com.outerspacemanager.outerspacemanager.interfaces.OnRapportListener;
         import mesa.com.outerspacemanager.outerspacemanager.R;
         import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
 
@@ -29,7 +27,7 @@ package mesa.com.outerspacemanager.outerspacemanager.adapter;
 public class AdapterViewReports extends RecyclerView.Adapter<AdapterViewReports.ReportsViewHolder> {
         private final Context context;
         private final ArrayList<Report> reports;
-        private OnGeneralClickedListener listener;
+        private OnRapportListener listener;
 
     public AdapterViewReports(Context context, ArrayList<Report> reports) {
             this.reports = reports;
@@ -112,7 +110,7 @@ public class AdapterViewReports extends RecyclerView.Adapter<AdapterViewReports.
             return reports.size();
         }
 
-    public void setListener(OnGeneralClickedListener listener) {
+    public void setListener(OnRapportListener listener) {
         this.listener = listener;
     }
 

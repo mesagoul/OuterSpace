@@ -1,33 +1,20 @@
 package mesa.com.outerspacemanager.outerspacemanager.activity;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
+import android.widget.FrameLayout;
 
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-
-import mesa.com.outerspacemanager.outerspacemanager.OnGeneralClickedListener;
 import mesa.com.outerspacemanager.outerspacemanager.Permissions.InternalStorage;
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.animations.ZoomOutPageTransformer;
-import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksDetail;
-import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksList;
-import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportDetail;
-import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportList;
-import mesa.com.outerspacemanager.outerspacemanager.model.Attack;
-import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentPagerView;
 import mesa.com.outerspacemanager.outerspacemanager.network.Service;
 import mesa.com.outerspacemanager.outerspacemanager.model.User;
 import mesa.com.outerspacemanager.outerspacemanager.utils.CustomDrawer;
@@ -41,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Lucas on 06/03/2017.
  */
 
-public class MainActivity extends FragmentActivity implements OnGeneralClickedListener {
+public class MainActivity extends FragmentActivity {
 
     // CONSTANTS
     private static final int RESULT_CODE_GENERAL = 0;
@@ -50,41 +37,35 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
 
     // VARIABLES
     private Double mineralGenerated;
+    private InternalStorage permission_storage;
     private Double gasGenerated;
     private CustomDrawer drawer;
-    private ArrayList<Fragment> listFragments;
     private Handler handler;
     private Runnable runnable;
     boolean isHandlerRun;
-    private InternalStorage permission_storage;
     // NETWORK
     private Retrofit retrofit;
     private Service service;
     private String token;
-    private Gson gson;
 
-    // VIEW PAGER
-    private ViewPager mPager;
-    private PagerAdapter mPagerAdapter;
-    private TabLayout tabLayout;
+
+    private Toolbar toolbar;
+    private FrameLayout fragment_frameLayout;
+    private boolean showFragment = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_activity);
 
-        listFragments = new ArrayList<Fragment>();
-        listFragments.add(new FragmentCurrentAttacksList());
-        listFragments.add(new FragmentRapportList());
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setToolbarName("Outer Space Manager");
 
-        gson = new Gson();
-
-        permission_storage = new InternalStorage(this);
-        permission_storage.askForPermission();
+        fragment_frameLayout = (FrameLayout) findViewById(R.id.fragment_frameLayout);
 
 
         // Instantiate Drawer
-        drawer = new CustomDrawer(this);
+        drawer = new CustomDrawer(this, toolbar);
         drawer.load();
 
 
@@ -114,98 +95,47 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
         service = retrofit.create(Service.class);
         refreshUser();
 
+        permission_storage = new InternalStorage(this);
+        permission_storage.askForPermission();
     }
 
-    public void initVariablesRequiredDataBase(){
-        mPager = (ViewPager) findViewById(R.id.main_pager);
-        mPager.setPageTransformer(true,new ZoomOutPageTransformer());
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), listFragments);
-        mPager.setAdapter(mPagerAdapter);
-
-
-        tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(mPager);
-    }
-
-    public void refreshPagerView(){
-        mPager.setAdapter(new ScreenSlidePagerAdapter(getSupportFragmentManager(), listFragments));
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 2: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Instantiate a ViewPager and a PagerAdapter.
-                   this.initVariablesRequiredDataBase();
-
-
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-                    permission_storage.askForPermission();
-                }
-                return;
-            }
-            // other 'case' lines to check for other
-            // permissions this app might request
-        }
+    public void initAfterRequiredDataBase(){
+                loadNewFragment(new FragmentPagerView());
     }
 
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() != 0){
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        if(drawer.getResult().isDrawerOpen()){
+            drawer.getResult().closeDrawer();
+        }else{
+            loadNewFragment(new FragmentPagerView());
         }
     }
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode != RESULT_CODE_GENERAL){
-            // if fleet response after attack an user
-            refreshUser();
-            if(resultCode == RESULT_CODE_ACTIVITY_AFTER_ATTACK){
-                // reload PagerView
-                refreshPagerView();
-            }
+    protected void onPostResume() {
+        super.onPostResume();
+        if (showFragment) {
+            initAfterRequiredDataBase();
         }
     }
 
+    // load new fragment to show in activity
+    public void loadNewFragment(Fragment newFragment ){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.fragment_frameLayout, newFragment);
+        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    // Update ressources of user (every seconds by Runnable)
     public void updateRessources(){
         this.gasGenerated += (0.5);
         this.mineralGenerated += (0.8);
         drawer.updateGasUser(String.valueOf(this.gasGenerated.intValue()));
         drawer.updateMineralUser(String.valueOf(this.mineralGenerated.intValue()));
-
-    }
-    @Override
-    public void onAttackClicked(Attack atk) {
-        FragmentCurrentAttacksList fragment_list = (FragmentCurrentAttacksList) getSupportFragmentManager().findFragmentById(R.id.fragment_generals);
-        FragmentCurrentAttacksDetail fragment_detail = (FragmentCurrentAttacksDetail) getSupportFragmentManager().findFragmentById(R.id.fragment_generals_detail);
-        if (fragment_detail == null || !fragment_detail.isInLayout()) {
-            Intent i = new Intent(getApplicationContext(), AttackDetailActivity.class);
-            i.putExtra("attack", gson.toJson(atk));
-            startActivity(i);
-        } else {
-            fragment_detail.setAttack(atk);
-        }
-    }
-
-    @Override
-    public void onReportClicked(Report report) {
-        FragmentRapportList fragment_list = (FragmentRapportList) getSupportFragmentManager().findFragmentById(R.id.fragment_generals);
-        FragmentRapportDetail fragment_detail = (FragmentRapportDetail) getSupportFragmentManager().findFragmentById(R.id.fragment_generals_detail);
-        if (fragment_detail == null || !fragment_detail.isInLayout()) {
-            Intent i = new Intent(getApplicationContext(), ReportDetailActivity.class);
-            i.putExtra("report", gson.toJson(report));
-            startActivity(i);
-        } else {
-            fragment_detail.setReport(report);
-        }
-
     }
 
     public void refreshUser(){
@@ -231,37 +161,30 @@ public class MainActivity extends FragmentActivity implements OnGeneralClickedLi
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
             }
         });
-
     }
-    /**
-     * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
-     * sequence.
-     */
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter{
-        private ArrayList<Fragment> listFragments;
-        private String tabTitles[] = new String[] { "Attaques en cours", "Rapports" };
+    public void setToolbarName(String name){
+        this.toolbar.setTitle(name);
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 2: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Instantiate a ViewPager and a PagerAdapter.
+                    showFragment = true;
 
-        public ScreenSlidePagerAdapter(FragmentManager fm, ArrayList<Fragment> listFragments) {
-            super(fm);
-            this.listFragments = listFragments;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return listFragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return listFragments.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return tabTitles[position];
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    permission_storage.askForPermission();
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
         }
     }
 }

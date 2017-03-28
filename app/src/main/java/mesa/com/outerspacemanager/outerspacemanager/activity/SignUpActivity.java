@@ -106,10 +106,17 @@ public class SignUpActivity extends Activity {
                 if (response.isSuccessful()) {
                     SharedPreferences settings = getSharedPreferences("token", 0);
                     SharedPreferences.Editor editor = settings.edit();
-
                     editor.putString("token", response.body().getToken());
                     editor.commit();
 
+
+
+                    SharedPreferences settings_device = getSharedPreferences("devicetoken", 0);
+                    String deviceToken = settings_device.getString("devicetoken", "");
+                    if(!deviceToken.isEmpty()){
+                        User user = new User(deviceToken);
+                        sendTokenDevice(response.body().getToken(),user);
+                    }
                     Intent toMainActivity = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(toMainActivity);
                 } else {
@@ -125,6 +132,24 @@ public class SignUpActivity extends Activity {
         });
     }
 
+    private void sendTokenDevice(String token, User user) {
+        Call<User> request = service.sendDeviceToken(token, user);
+        request.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if(!response.isSuccessful()){
+                    Toast.makeText(getApplicationContext(), String.format("Erreur serveur"), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), String.format("Erreur serveur"), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     public void inscription(){
         Call<User> request = service.createUserAccount(currentUser);
 
@@ -137,7 +162,6 @@ public class SignUpActivity extends Activity {
                 if(response.isSuccessful()){
                     SharedPreferences settings = getSharedPreferences("token", 0);
                     SharedPreferences.Editor editor = settings.edit();
-
                     editor.putString("token", response.body().getToken());
                     editor.commit();
 

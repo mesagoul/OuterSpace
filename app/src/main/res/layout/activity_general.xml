@@ -8,7 +8,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportList"
+        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.reports.FragmentReportsList"
         android:id="@+id/fragment_generals"/>
 
 

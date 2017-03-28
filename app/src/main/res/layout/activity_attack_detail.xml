@@ -6,6 +6,6 @@
         android:id="@+id/fragment_attack_detail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentCurrentAttacksDetail"/>
+        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.currentAttacks.FragmentCurrentAttacksDetail"/>
 
 </LinearLayout>

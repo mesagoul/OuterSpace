@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.fragments;
+package mesa.com.outerspacemanager.outerspacemanager.fragments.ships;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -8,14 +8,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import mesa.com.outerspacemanager.outerspacemanager.interfaces.ChantierListener;
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.activity.ChantierActivity;
 import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewChantier;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ship;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ships;
@@ -41,6 +42,7 @@ public class FragmentShipList extends Fragment {
     private ArrayList<Ship> myShips;
     private Double currentUserMinerals;
     private Double currentUserGas;
+    private ChantierListener listener;
 
     // NETWORK
     private String token;
@@ -75,7 +77,12 @@ public class FragmentShipList extends Fragment {
             public void onRefresh() {refreshListShips();}
         });
 
-        list_ships.setOnItemClickListener((ChantierActivity)getActivity());
+        list_ships.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                listener.onShipClicked(myShips.get(position), getCurrentUserGas(),getCurrentUserMinerals());
+            }
+        });
 
         progressBar.setVisibility(View.VISIBLE);
         refreshListShips();
@@ -94,7 +101,7 @@ public class FragmentShipList extends Fragment {
                     myShips = response.body().getShips();
                     currentUserGas = response.body().getCurrentUserGas();
                     currentUserMinerals = response.body().getCurrentUserMinerals();
-                    ((ChantierActivity) getActivity()).shipsFetched(myShips, currentUserMinerals, currentUserGas);
+                    listener.shipsFetched(myShips, currentUserMinerals, currentUserGas);
                     list_ships.setAdapter(new AdapterViewChantier(getContext(), myShips));
                 } else {
                     Toast.makeText(getContext(), String.format("Erreur lors de la récupération des vaisseaux"), Toast.LENGTH_SHORT).show();
@@ -117,5 +124,9 @@ public class FragmentShipList extends Fragment {
         return this.currentUserGas;
     }
 
+
+    public void setListener(ChantierListener listener) {
+        this.listener = listener;
+    }
 }
 

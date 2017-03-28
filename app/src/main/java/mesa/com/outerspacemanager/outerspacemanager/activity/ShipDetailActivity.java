@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.fragments.Fragment_ship_detail;
+import mesa.com.outerspacemanager.outerspacemanager.fragments.ships.Fragment_ship_detail;
 import mesa.com.outerspacemanager.outerspacemanager.model.Ship;
 
 /**

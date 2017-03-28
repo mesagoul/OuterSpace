@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.fragments;
+package mesa.com.outerspacemanager.outerspacemanager.fragments.reports;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,13 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
+import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
+import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewReportsDetail;
 import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
 
 /**
  * Created by Lucas on 20/03/2017.
  */
 
-    public class FragmentRapportDetail extends Fragment {
+    public class FragmentReportsDetail extends Fragment {
         private RecyclerView rvAttackDetail;
         private RecyclerView rvDefendDetail;
         @Nullable
@@ -36,6 +38,7 @@ import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
         }
 
         public void setReport(Report report) {
-           // rvDetail.setAdapter(new AdapterViewReportsDetail(getContext(),report));
+            rvAttackDetail.setAdapter(new AdapterViewReportsDetail(getContext(), report.getAttackerFleetAfterBattle()));
+            rvDefendDetail.setAdapter(new AdapterViewReportsDetail(getContext(), report.getDefenderFleetAfterBattle()));
         }
 }

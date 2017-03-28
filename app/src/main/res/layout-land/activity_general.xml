@@ -7,14 +7,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportList"
+        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.reports.FragmentReportsList"
         android:id="@+id/fragment_generals"/>
 
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.FragmentRapportDetail"
+        android:name="mesa.com.outerspacemanager.outerspacemanager.fragments.reports.FragmentReportsDetail"
         android:id="@+id/fragment_generals_detail"/>
 
 

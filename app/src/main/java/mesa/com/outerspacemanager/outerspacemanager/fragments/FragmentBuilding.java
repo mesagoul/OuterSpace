@@ -1,25 +1,28 @@
-package mesa.com.outerspacemanager.outerspacemanager.activity;
+package mesa.com.outerspacemanager.outerspacemanager.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 
 import mesa.com.outerspacemanager.outerspacemanager.R;
-import mesa.com.outerspacemanager.outerspacemanager.network.Service;
+import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
 import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewBuilding;
 import mesa.com.outerspacemanager.outerspacemanager.model.Building;
 import mesa.com.outerspacemanager.outerspacemanager.model.Buildings;
+import mesa.com.outerspacemanager.outerspacemanager.network.Service;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,7 +33,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Lucas on 06/03/2017.
  */
 
-public class BuildingActivity extends AppCompatActivity{
+public class FragmentBuilding extends Fragment {
     // UI ELEMENTS
     private ListView list_buildings;
     private ProgressBar progressBar;
@@ -45,32 +48,19 @@ public class BuildingActivity extends AppCompatActivity{
     private Service service;
     private String token;
 
-
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_listview);
-
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ViewGroup v = (ViewGroup) inflater.inflate(R.layout.activity_item_listview,container,false);
         // INIT UI ELEMENTS
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        list_buildings = (ListView) findViewById(R.id.list_items);
-
-        // INIT BACK ARROW
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
+        list_buildings = (ListView) v.findViewById(R.id.list_items);
 
         // REFRESH ON SWIPE DOWN
-        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_items_layout);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshListBuildings();
-            }
-        });
+        refreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swipe_items_layout);
 
         // INIT NETWORK
-        SharedPreferences settings = getSharedPreferences("token", 0);
+        SharedPreferences settings = getActivity().getSharedPreferences("token", 0);
         token = settings.getString("token", new String());
 
         retrofit = new Retrofit.Builder()
@@ -78,6 +68,19 @@ public class BuildingActivity extends AppCompatActivity{
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+       return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ((MainActivity)getActivity()).setToolbarName("Bâtiments");
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshListBuildings();
+            }
+        });
         // EVENTS
         list_buildings.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -92,15 +95,7 @@ public class BuildingActivity extends AppCompatActivity{
         progressBar.setVisibility(View.VISIBLE);
         refreshListBuildings();
     }
-    // ON BACK ARROW PRESSED
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home){
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     // REFRESH LIST OF BUILDINGS
     public void refreshListBuildings(){
@@ -113,22 +108,22 @@ public class BuildingActivity extends AppCompatActivity{
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
                     myBuildings = response.body().getBuildings();
-                    list_buildings.setAdapter(new AdapterViewBuilding(getApplicationContext(), myBuildings));
+                    list_buildings.setAdapter(new AdapterViewBuilding(getActivity().getApplicationContext(), myBuildings));
                 } else {
-                    Toast.makeText(getApplicationContext(), String.format("Erreur lors de la récupération des batiments"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), String.format("Erreur lors de la récupération des batiments"), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Buildings> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), String.format("Erreur lors de la récupération des batiments"), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), String.format("Erreur lors de la récupération des batiments"), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     // When an item on the listView is clicked
     public void onBuildingClick(){
-        AlertDialog.Builder alerteDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder alerteDialog = new AlertDialog.Builder(getContext());
         alerteDialog.setMessage("Améliorer "+currentBuilding.getName() + " ?");
         alerteDialog.setCancelable(true);
 
@@ -142,12 +137,11 @@ public class BuildingActivity extends AppCompatActivity{
                             public void onResponse(Call<Building> call, Response<Building> response) {
 
                                 if(response.isSuccessful()){
-                                    Toast.makeText(getApplicationContext(), String.format("En construction"), Toast.LENGTH_SHORT).show();
-                                    setResult(2);
-                                    finish();
+                                    Toast.makeText(getActivity().getApplicationContext(), String.format("En construction"), Toast.LENGTH_SHORT).show();
+                                    ((MainActivity)getActivity()).loadNewFragment(new FragmentPagerView());
                                 }else{
                                     //responses = gson.fromJson(response.errorBody().toString(), Responses.class);
-                                    Toast.makeText(getApplicationContext(), String.format("Votre batiment est déja en construction"), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getActivity().getApplicationContext(), String.format("Votre batiment est déja en construction"), Toast.LENGTH_SHORT).show();
                                 }
                                 //response.errorBody().string()
 
@@ -155,7 +149,7 @@ public class BuildingActivity extends AppCompatActivity{
 
                             @Override
                             public void onFailure(Call<Building> call, Throwable t) {
-                                Toast.makeText(getApplicationContext(), String.format("Erreur lors de l'upgrade de votre batiment"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity().getApplicationContext(), String.format("Erreur lors de l'upgrade de votre batiment"), Toast.LENGTH_SHORT).show();
                             }
                         });
                         refreshListBuildings();

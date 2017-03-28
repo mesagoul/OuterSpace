@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Outer Space Manager</string>
     <string name="app_building">Bâtiments</string>
+
+    <string name="app_searches">Recherches</string>
+    <string name="app_fleet">Flotte</string>
+    <string name="app_galaxy">Galaxie</string>
+    <string name="app_chantier">Chantier naval</string>
+    <string name="app_attacks">Chantier naval</string>
+    <string name="app_reports">Chantier naval</string>
+
 </resources>

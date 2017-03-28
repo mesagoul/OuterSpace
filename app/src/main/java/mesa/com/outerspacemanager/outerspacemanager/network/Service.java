@@ -24,87 +24,101 @@ import retrofit2.http.Path;
 
 public interface Service {
 
-        // USERS
+    // DEVICE
 
-        @POST("api/v1/auth/create")
-        Call<User> createUserAccount(
-                @Body User user);
+    @POST("api/v1/devices/add")
+    Call<User> testPushMe(
+            @Header("x-access-token") String token
+    );
 
-        @POST("api/v1/auth/login")
-        Call<User> connectUserAccount(
-                @Body User user);
-
-        @GET("api/v1/users/get")
-        Call<User> getUser(@Header("x-access-token") String token);
-
-        @GET("api/v1/users/{from}/{limit}")
-        Call<Users> getUsers(
-                @Header("x-access-token") String token,
-                @Path("from") int from,
-                @Path("limit") int limit
-        );
+    @GET("api/v1/devices/pushme")
+    Call<User> sendDeviceToken(
+            @Header("x-access-token") String token,
+            @Body User user);
 
 
-        // BUILDINGS
-        @GET("api/v1/buildings/list")
-        Call<Buildings> getBuildings(
-                @Header("x-access-token") String token
-        );
 
-        @POST("api/v1/buildings/create/{buildingId}")
-        Call<Building> upgradeBuilding(
-                @Header("x-access-token") String token,
-                @Path("buildingId") int buildingId
-        );
+    // USERS
 
-        // SEARCHES
-        @GET("api/v1/searches/list")
-        Call<Searches> getSearches(
-                @Header("x-access-token") String token
-        );
+    @POST("api/v1/auth/create")
+    Call<User> createUserAccount(
+            @Body User user);
 
-        @POST("/api/v1/searches/create/{searchId}")
-        Call<Searche> upgradeSearche(
-                @Header("x-access-token") String token,
-                @Path("searchId") int buildingId
-        );
+    @POST("api/v1/auth/login")
+    Call<User> connectUserAccount(
+            @Body User user);
 
-        // SHIPS
+    @GET("api/v1/users/get")
+    Call<User> getUser(@Header("x-access-token") String token);
 
-        @GET("api/v1/ships")
-        Call<Ships> getShips(
-                @Header("x-access-token") String token
-        );
-
-        @GET("api/v1/fleet/list")
-        Call<Ships> getMyShips(
-                @Header("x-access-token") String token
-        );
-
-        @POST("api/v1/ships/create/{shipId}")
-        Call<Ships> buyShip(
-                @Header("x-access-token") String token,
-                @Path("shipId") int shipId,
-                @Body Amount amount
-        );
-
-        // ATTAQUE
-
-        @POST("api/v1/fleet/attack/{userName}")
-        Call<AttackResponse> attaqueUser(
-                @Header("x-access-token") String token,
-                @Path("userName") String username,
-                @Body Ships ships
-        );
+    @GET("api/v1/users/{from}/{limit}")
+    Call<Users> getUsers(
+            @Header("x-access-token") String token,
+            @Path("from") int from,
+            @Path("limit") int limit
+    );
 
 
-        // REPORTS
-        @GET("/api/v1/reports/{from}/{limit}")
-        Call<Reports> getReports(
-                @Header("x-access-token") String token,
-                @Path("from") String from,
-                @Path("limit") String limit
-        );
+    // BUILDINGS
+    @GET("api/v1/buildings/list")
+    Call<Buildings> getBuildings(
+            @Header("x-access-token") String token
+    );
+
+    @POST("api/v1/buildings/create/{buildingId}")
+    Call<Building> upgradeBuilding(
+            @Header("x-access-token") String token,
+            @Path("buildingId") int buildingId
+    );
+
+    // SEARCHES
+    @GET("api/v1/searches/list")
+    Call<Searches> getSearches(
+            @Header("x-access-token") String token
+    );
+
+    @POST("/api/v1/searches/create/{searchId}")
+    Call<Searche> upgradeSearche(
+            @Header("x-access-token") String token,
+            @Path("searchId") int buildingId
+    );
+
+    // SHIPS
+
+    @GET("api/v1/ships")
+    Call<Ships> getShips(
+            @Header("x-access-token") String token
+    );
+
+    @GET("api/v1/fleet/list")
+    Call<Ships> getMyShips(
+            @Header("x-access-token") String token
+    );
+
+    @POST("api/v1/ships/create/{shipId}")
+    Call<Ships> buyShip(
+            @Header("x-access-token") String token,
+            @Path("shipId") int shipId,
+            @Body Amount amount
+    );
+
+    // ATTAQUE
+
+    @POST("api/v1/fleet/attack/{userName}")
+    Call<AttackResponse> attaqueUser(
+            @Header("x-access-token") String token,
+            @Path("userName") String username,
+            @Body Ships ships
+    );
+
+
+    // REPORTS
+    @GET("/api/v1/reports/{from}/{limit}")
+    Call<Reports> getReports(
+            @Header("x-access-token") String token,
+            @Path("from") String from,
+            @Path("limit") String limit
+    );
 
 
 

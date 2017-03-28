@@ -35,7 +35,9 @@ public class InternalStorage extends AppCompatActivity{
                         MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
             }
         }else{
-            ((MainActivity)this.activity).initVariablesRequiredDataBase();
+            if(this.activity instanceof  MainActivity){
+                ((MainActivity)this.activity).initAfterRequiredDataBase();
+            }
         }
     }
 

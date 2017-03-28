@@ -1,4 +1,4 @@
-package mesa.com.outerspacemanager.outerspacemanager.fragments;
+package mesa.com.outerspacemanager.outerspacemanager.fragments.reports;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,8 +14,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
+import mesa.com.outerspacemanager.outerspacemanager.interfaces.OnRapportListener;
+import mesa.com.outerspacemanager.outerspacemanager.R;
 import mesa.com.outerspacemanager.outerspacemanager.adapter.AdapterViewReports;
 import mesa.com.outerspacemanager.outerspacemanager.model.Report.Report;
 import mesa.com.outerspacemanager.outerspacemanager.model.Report.Reports;
@@ -30,7 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Lucas on 20/03/2017.
  */
 
-public class FragmentRapportList extends Fragment {
+public class FragmentReportsList extends Fragment {
     // UI ELEMENTS
     private RecyclerView rvRapport;
     private ProgressBar progressBar;
@@ -43,6 +44,7 @@ public class FragmentRapportList extends Fragment {
 
     // VARIABLES
     private ArrayList<Report> listReports;
+    private OnRapportListener listener;
 
     @Nullable
     @Override
@@ -76,7 +78,7 @@ public class FragmentRapportList extends Fragment {
         }else{
             progressBar.setVisibility(View.GONE);
             AdapterViewReports adapter = new AdapterViewReports(getContext(), listReports);
-            adapter.setListener((MainActivity)getActivity());
+            adapter.setListener(listener);
             rvRapport.setAdapter(adapter);
         }
     }
@@ -97,5 +99,8 @@ public class FragmentRapportList extends Fragment {
             }
 
         });
+    }
+    public void setListener(OnRapportListener listener) {
+        this.listener = listener;
     }
 }

@@ -16,6 +16,7 @@ public class User {
     private String username;
     private String password;
     private String token;
+    private String deviceToken;
     private Float gas;
     private Integer gasModifier;
     private Float minerals;
@@ -26,6 +27,10 @@ public class User {
     public User(String username, String password){
         this.username = username;
         this.password = password;
+    }
+
+    public User(String deviceToken) {
+        this.deviceToken = deviceToken;
     }
 
     public String getUsername(){
