@@ -13,6 +13,8 @@
     import java.text.SimpleDateFormat;
     import java.util.Date;
     import java.util.List;
+    import java.util.Locale;
+    import java.util.TimeZone;
 
     import mesa.com.outerspacemanager.outerspacemanager.interfaces.OnAttackListner;
     import mesa.com.outerspacemanager.outerspacemanager.R;
@@ -73,13 +75,14 @@
                 holder.runnable = new Runnable() {
                     @Override
                     public void run() {
-                        DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+                        DateFormat formatter = new SimpleDateFormat("HH:mm:ss", Locale.FRANCE);
                         if(anAttack.getAttack_time() - System.currentTimeMillis() < 0){
                             // reload this recycleView with datas UPDATED
                             holder.stopHandler = true;
                             fragment.updateDatas();
                         }
                         Date date = new Date(anAttack.getAttack_time() - System.currentTimeMillis());
+                        formatter.setTimeZone(TimeZone.getTimeZone("Etc/UTC"));
                         String dateFormatted = formatter.format(date);
                         holder.date.setText(dateFormatted);
                         holder.progress.setProgress(anAttack.getProgress());

@@ -10,9 +10,20 @@
         android:layout_height="match_parent">
         <TextView
             android:gravity="center"
+            android:textSize="25sp"
             android:layout_width="match_parent"
+            android:textStyle="bold"
             android:layout_height="wrap_content"
             android:text="Attaquant"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+            android:id="@+id/report_from_username"/>
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -32,8 +43,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:textStyle="bold"
             android:gravity="center"
             android:text="Défenseur"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+            android:id="@+id/report_to_username"/>
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"

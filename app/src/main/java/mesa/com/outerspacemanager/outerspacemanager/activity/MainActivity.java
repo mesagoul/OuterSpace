@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void initAfterRequiredDataBase(){
-                loadNewFragment(new FragmentPagerView());
+                loadNewFragment(new FragmentPagerView(),false);
     }
 
     @Override
@@ -108,7 +108,8 @@ public class MainActivity extends FragmentActivity {
         if(drawer.getResult().isDrawerOpen()){
             drawer.getResult().closeDrawer();
         }else{
-            loadNewFragment(new FragmentPagerView());
+            setToolbarName("Outer Space");
+            loadNewFragment(new FragmentPagerView(), true);
         }
     }
 
@@ -122,10 +123,14 @@ public class MainActivity extends FragmentActivity {
     }
 
     // load new fragment to show in activity
-    public void loadNewFragment(Fragment newFragment ){
+    public void loadNewFragment(Fragment newFragment , boolean isCloseFragment){
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_frameLayout, newFragment);
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        if(isCloseFragment){
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+        }else{
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        }
         ft.addToBackStack(null);
         ft.commit();
     }

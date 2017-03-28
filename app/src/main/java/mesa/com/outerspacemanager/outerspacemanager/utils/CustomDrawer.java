@@ -121,7 +121,7 @@ public class CustomDrawer {
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         if(Integer.parseInt(String.valueOf(drawerItem.getIdentifier())) != 6){
                             Fragment newFragment = getFragmentFromIdentifier(Integer.parseInt(String.valueOf(drawerItem.getIdentifier())));
-                            ((MainActivity)activity).loadNewFragment(newFragment);
+                            ((MainActivity)activity).loadNewFragment(newFragment, false);
 
                         }else{
                             SharedPreferences settings = activity.getSharedPreferences("token", 0);

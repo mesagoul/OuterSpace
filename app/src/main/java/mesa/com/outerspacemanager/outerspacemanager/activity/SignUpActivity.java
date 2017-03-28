@@ -31,6 +31,7 @@ public class SignUpActivity extends Activity {
     // UI ELEMENTS
     private EditText username;
     private EditText password;
+    private EditText email;
     private ProgressBar progressBar;
     private LinearLayout layout_connexion;
 
@@ -55,6 +56,7 @@ public class SignUpActivity extends Activity {
 
         username = (EditText) findViewById(R.id.input_identifiant);
         password = (EditText) findViewById(R.id.input_mdp);
+        email = (EditText) findViewById(R.id.input_email);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         layout_connexion = (LinearLayout) findViewById(R.id.layout_connexion);
         Button btn_inscription = (Button) findViewById(R.id.btn_inscription);
@@ -84,7 +86,7 @@ public class SignUpActivity extends Activity {
         btn_inscription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentUser = new User(username.getText().toString(),password.getText().toString());
+                currentUser = new User(username.getText().toString(),password.getText().toString(),email.getText().toString());
                 progressBar.setVisibility(View.VISIBLE);
                 layout_connexion.setVisibility(View.GONE);
                 inscription();

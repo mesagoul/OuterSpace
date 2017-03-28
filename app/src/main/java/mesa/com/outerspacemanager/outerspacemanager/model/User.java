@@ -22,11 +22,17 @@ public class User {
     private Float minerals;
     private Integer mineralsModifier;
     private Double points;
+    private String email;
 
 
     public User(String username, String password){
         this.username = username;
         this.password = password;
+    }
+    public User(String username, String password, String email){
+        this.username = username;
+        this.password = password;
+        this.email = email;
     }
 
     public User(String deviceToken) {
@@ -53,5 +59,10 @@ public class User {
     }
     public Double getPoints(){
         return this.points;
+    }
+    public String getEmail(){return this.email;}
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

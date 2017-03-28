@@ -171,7 +171,7 @@ public class FragmentFlotte extends Fragment {
                     db.createAttack(attack);
                     db.close();
                     Toast.makeText(getActivity().getApplicationContext(), String.format("Votre flotte à été envoyée au combat"), Toast.LENGTH_SHORT).show();
-                    ((MainActivity)getActivity()).loadNewFragment(new FragmentPagerView());
+                    ((MainActivity)getActivity()).loadNewFragment(new FragmentPagerView(), true);
                 } else {
                     Toast.makeText(getActivity().getApplicationContext(), String.format("Erreur lors de la récupération des vaisseaux"), Toast.LENGTH_SHORT).show();
                 }

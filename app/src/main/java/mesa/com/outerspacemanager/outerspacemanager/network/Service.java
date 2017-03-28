@@ -26,12 +26,12 @@ public interface Service {
 
     // DEVICE
 
-    @POST("api/v1/devices/add")
+    @GET("api/v1/devices/pushme")
     Call<User> testPushMe(
             @Header("x-access-token") String token
     );
 
-    @GET("api/v1/devices/pushme")
+    @POST("api/v1/devices/add")
     Call<User> sendDeviceToken(
             @Header("x-access-token") String token,
             @Body User user);
