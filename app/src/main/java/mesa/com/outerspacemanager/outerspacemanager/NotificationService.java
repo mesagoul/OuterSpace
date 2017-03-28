@@ -17,7 +17,7 @@ import mesa.com.outerspacemanager.outerspacemanager.activity.MainActivity;
  * Created by Lucas on 27/03/2017.
  */
 
-public class myJobService extends JobService {
+public class NotificationService extends JobService {
     @Override
     public boolean onStartJob(JobParameters job) {
         Log.d("APPDEBUG","Load my JOB");
